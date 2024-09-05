@@ -4,7 +4,7 @@ Flask-Login
 Flask-Uploads
 Flask-Migrate
 Flask-WTF
-Werkzeug==0.16.0
+Werkzeug
 WTForms
 requests
 markupsafe==2.0.1
