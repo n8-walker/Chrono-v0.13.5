@@ -1,7 +1,7 @@
 Flask
 Flask-SQLAlchemy==3.0.2
 Flask-Login
-Flask-Uploads
+-e git://github.com/maxcountryman/flask-uploads.git#egg=elasticutils
 Flask-Migrate
 Flask-WTF
 Werkzeug
