@@ -1,0 +1,264 @@
+button {
+  font-family: 'Montserrat', sans-serif;
+}
+
+body {
+  font-family: "Montserrat", sans-serif;
+  background-color: #f0f4f8;
+  margin: 0;
+  padding: 0;
+  transition: background-color .5s;
+  display: flex;
+  flex-wrap: wrap; /* Ensures flex items wrap within the container */
+  max-width: 100%; /* Prevent container from exceeding viewport */
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+.booty {
+  width: 100%;
+  box-sizing: border-box; /* Ensure padding is included in width */
+  font-family: "Montserrat", sans-serif;
+}
+
+.navbar {
+  display: flex;
+  flex-wrap: wrap; /* Ensures flex items wrap within the container */
+  max-width: 100%; /* Prevent container from exceeding viewport */
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 20px;
+  background-color: #ffffff;
+  box-shadow: 0 0 18px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box; /* Ensure padding is included in width */
+}
+
+.profile {
+  float: right;
+  padding: 10px;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.profile-pic {
+  width: 40px;
+  height: 40px;
+  float: left;
+  border-radius: 50%;
+}
+
+.profile-name {
+  margin-left: 10px;
+  float: right;
+  display: block;
+  padding: 10px;
+}
+
+.profile-p {
+  width: 60px;
+  padding-left: 42%;
+  padding-right: 42%;
+  border-radius: 50%;
+}
+
+.profile-n {
+  text-align: center;
+}
+
+.dropdown-menu {
+  display: none;
+  position: fixed;
+  top: 12%;
+  right: 12%;
+  left: 78%;
+  background-color: #ffffff;
+  width: 250px;
+  padding: 20px 20px 20px 20px;
+  overflow: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  border-radius: 10px;
+}
+
+.dropdown-menu a {
+  color: rgb(88, 88, 88);
+  padding: 12px 16px;
+  text-decoration: none;
+  width: 200px;
+  display: block;
+}
+
+.dropdown-menu a:hover {
+  background-color: #ddd;
+}
+
+.logo-container img {
+  width: 50px;
+}
+
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #f8f7f7;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.nbutton a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 17px;
+  color: #6b6b6b;
+  display: block;
+  transition: 0.3s;
+  padding: 20px 40px;
+}
+
+.nbutton a:hover {
+  color: rgb(78, 78, 78);
+  background-color: rgba(149, 0, 255, 0.342);
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 36px;
+  margin-left: 50px;
+  padding: 20px;
+  text-decoration: none;
+  color: black;
+}
+
+.credits{
+  padding: 25px;
+  position: absolute;
+  top: 78%;
+  color: rgb(140, 140, 140);
+}
+
+.pincr{
+  font-size: smaller;
+}
+
+.searchu {
+  float: left;    
+  position: absolute;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+
+}
+
+.findfriends{
+  border-width: 0;
+  border-radius: 10px;
+  box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.5);
+  padding: 10px; 
+  font-family: 'Montserrat', sans-serif;
+}
+.findfrbtn{
+  padding: 10px;
+  background-color: blueviolet;
+  color: white;
+  border-width: 0;
+  border-radius: 10px;
+  box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.5);
+  font-family: 'Montserrat', sans-serif;
+}
+
+#main {
+  transition: margin-left .5s;
+  padding: 16px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {
+      padding-top: 15px;
+  }
+  .sidenav a {
+      font-size: 18px;
+  }
+}
+
+.nav{
+  max-height: min-content;
+}
+
+/* width */
+::-webkit-scrollbar {
+width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+background-image: linear-gradient(45deg, purple, rgb(11, 128, 0), rgb(0, 102, 255));
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+background: #e0e0e0;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+background: #999999;
+}
+
+.fas{
+  font-size: large;
+}
+
+.block-message {
+  display: none;
+  text-align: center;
+  padding: 20px;
+  color: white;
+  font-size: 1.5em;
+}
+
+@media (max-width: 1267px) {
+
+.premium {
+  display: none;
+}
+.navbar {
+  width: 100%;
+}
+.searchu{
+  display: none;
+}
+.profile-name{
+  display: none;
+}
+html, body {
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  max-width: 100%;    /* Ensure no element extends beyond the viewport */
+  margin: 0;
+  padding: 0;
+}
+.booty {
+  max-width: 100%;
+}
+img, iframe, video {
+  max-width: 100%; /* Ensure media elements fit within the viewport */
+  height: auto;
+  display: block;
+}
+.dropdown-menu {
+  position: relative;
+  top: 2%;
+  left: 65px;
+  background-color: #ffffff;
+  width: 250px;
+  overflow: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  border-radius: 10px;
+  overflow-x: hidden;
+}
+}

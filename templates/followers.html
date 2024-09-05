@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ user.display_name or user.username }}'s Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/followers.css')}}">    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="icon" href="https://i.ibb.co/YBxkyWP/Chrono.png">
+    <title>Followers of {{ user.username }}</title>
+</head>
+<body>
+    <h2 id="itemCount" style="float: left; position: absolute; top: 0; padding: 0;"></h2><h1>&nbsp;Followers</h1>
+    <ul id="itemList">
+        {% if len_f > 0 %}
+        {% for follower in followers %}
+            <a class="flwr" href="{{ url_for('profile', username=follower.username) }}" target="_blank" style="color: black; text-decoration: none;"><li style="padding: 5px; border-radius: 7px; background-color: whitesmoke; text-align: center;"><img src="{{ url_for('static', filename='uploads/' + follower.profile_image) }}" width="30px" style="border-radius: 50%; vertical-align: middle;">&nbsp;&nbsp;{{follower.display_name}} - @{{ follower.username }}</li></a>
+        {% endfor %}
+        {% else %}
+        <p style="text-align: left;">No one is following {{user.display_name.split(' ')[0]}}. Be the first one!</p>
+        {% endif %}
+    </ul>
+    <script>
+        // Get the list and the paragraph element
+const itemList = document.getElementById('itemList');
+const itemCount = document.getElementById('itemCount');
+
+// Count the number of list items
+const numberOfItems = itemList.getElementsByTagName('li').length;
+
+// Output the count
+itemCount.textContent = `${numberOfItems}`;
+
+    </script>
+</body>
+</html>

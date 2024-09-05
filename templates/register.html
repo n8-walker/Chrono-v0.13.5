@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/stylesrg.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" href="https://i.ibb.co/YBxkyWP/Chrono.png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <title>Register - Web Chrono</title>
+</head>
+<body>
+    <div class="container">
+        <div class="left-section">
+            <div class="logo-container">
+                <img src="https://i.ibb.co/MSCH8TG/chrono11.png" alt="Chrono" border="0" width="300" height="100%">
+            </div>
+        </div>
+        <div class="right-section">
+            <h2>Register</h2>
+            <form action="/register" method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+
+                <label for="birthdate">Birth Date:</label>
+                <input type="date" id="birthdate" name="birthdate" required><br><br>
+
+                <input type="submit" value="Register">
+                <p>Already have an account? <a href="/login" style="background-image: linear-gradient(45deg, rgb(255, 0, 255), rgb(0, 97, 177), rgb(119, 0, 255)); background-clip: text; -webkit-text-fill-color: transparent; text-align: center; font-weight: 550;">Sign-in</a></p>
+            </form>
+            {% if message %}
+                <p class="error-message">{{ message }}</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,345 @@
+.container {
+  padding: 1.4641288433382137628111273792094%;
+  box-sizing: border-box; /* Ensure padding is included in width */
+}
+
+h1 {
+  color: #333;
+}
+
+.content {
+  display: flex;
+  gap: 1.4858841010401188707280832095097%;
+  flex-wrap: wrap; /* Ensure items wrap on smaller screens */
+}
+
+.noobj, .upcomingt, .recent-activities {
+  flex: 1;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box; /* Ensure padding is included in width */
+  min-width: 300px; /* Ensure elements do not become too small */
+  height: max-content;
+}
+
+.upcomingt {
+  background-color: rgb(182, 196, 248);
+}
+
+.tmore {
+  border-radius: 7px;
+  padding: 10px;
+  background-color: rgb(115, 146, 255);
+  border-color: rgb(0, 0, 0);
+  position: relative;
+  top: 150px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 550;
+}
+
+.recent-activities {
+  background-color: #9fff8c;
+}
+
+.noobj {
+  background-color: #ffafff;
+}
+
+.lr {
+  text-align: left;
+  width: 65%;
+  position: relative;
+  top: -100px;
+  left: 34%;
+}
+
+.lr h2 {
+  color: #333;
+  margin-bottom: 10px;
+  position: relative;
+  top: -10px;
+}
+
+.lr p {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 20px;
+  float: left; /* You can keep this if you want the text to float left */
+  position: relative;
+  top: -30px;
+}
+
+.lrb {
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: white;
+  background-color: #8642f5;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  float: right;
+  position: relative;
+  top: -40px;
+  font-family: 'Montserrat', Arial, sans-serif;
+}
+
+.lrb:hover {
+  background-color: #6c34c4;
+}
+
+.lrb i {
+  margin-right: 8px;
+}
+
+
+h2 {
+  color: #333;
+}
+
+.utl {
+  background-color: rgb(255, 141, 141);
+  border-radius: 10px;
+  font-weight: 500;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  padding: 10px 0;
+  border-bottom: 1px solid #ff0000;
+}
+
+li:last-child {
+  border-bottom: none;
+}
+
+.time {
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-size: xxx-large;
+  float: right;
+  padding: 20px;
+}
+
+.date {
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-size: large;
+  float: right;
+  padding: 20px;
+  position: relative;
+  top: -20px;
+  left: 230px;
+  text-align: center;
+}
+
+.resources {
+  background-color: #f4f4f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  top: -130px;
+}
+
+.resources h2 {
+  color: #333;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.resources p {
+  color: #555;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.resources button {
+  background-color: #8642f5;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+
+}
+
+.resources button:hover {
+  background-color: #6c32c5;
+}
+
+.sndcontainer {
+  display: flex;
+  gap: 50px;
+  position: relative;
+  top: -100px;
+}
+
+.timer {
+  width: 50%;
+}
+
+.premium {
+  width: 100%;
+}
+
+.timer, .premium {
+  border-radius: 7px;
+  background-color: #ffffff;
+  padding: 20px 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
+}
+
+.sndcontainer button{
+  border-radius: 5px;
+  background-color: #8642f5;
+  padding: 10px 20px;
+  color: white;
+  font-family: "Montserrat", sans-serif;
+  border: none;
+}
+
+.sndcontainer button:hover{
+  background-color: #6c34c4;
+}
+
+.donate, .upgrade {
+  text-align: center;
+  border-radius: 5px;
+  background-color: #8642f5;
+  padding: 10px 20px;
+  color: white;
+  font-family: "Montserrat", sans-serif;
+  border: none;
+}
+
+.gallery-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 47%;
+  overflow: hidden;
+  padding: 20px 0;
+  background-color: #fff;
+  float: right;
+  height: 400px;
+  scrollbar-width: 5px;
+  border-radius: 7px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+}
+
+.gallery-wrapper {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding: 0px 100px;
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+  margin: 0 0 0 50px;
+}
+
+.gallery-item {
+  flex: 0 0 auto;
+  width: 200px;
+  padding: 15px;
+  background-color: #e3e3e3;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  scroll-snap-align: start;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.gallery-item h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.gallery-item p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #777;
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #333;
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 10;
+  border-radius: 50%;
+  user-select: none;
+}
+
+.arrow.left {
+  left: 10px;
+}
+
+.arrow.right {
+  right: 10px;
+}
+@media (max-width: 768px) {
+.tid {
+  display: none;
+}
+.noobj, .upcomingt, .recent-activities{
+  flex: 1;
+  max-width: 100%; /* Ensure elements do not become too small */
+  height: min-content;
+}
+.upcomingt {
+  display: none;
+}
+.recent-activities {
+  display: none;
+}
+.noobj {
+  background-color: #f0f4f8;
+  box-shadow: none;
+  border-radius: none;
+  border: none;
+  margin: 0% 0%;
+  padding: -20px;
+}
+.lr {
+  display: none;
+}
+.resources {
+  display: none;
+}
+.timer {
+  display: none;
+}
+.gallery-container {
+  display: none;
+}
+.premium {
+  display: none;
+}
+}

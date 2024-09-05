@@ -1,0 +1,9 @@
+Flask
+Flask-SQLAlchemy
+Flask-Login
+Flask-Uploads
+Flask-Migrate
+Flask-WTF
+Werkzeug==0.16.0
+WTForms
+requests

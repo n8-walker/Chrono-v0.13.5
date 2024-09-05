@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ user.display_name }}'s Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/edit_profile.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/uni.css')}}">    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="icon" href="https://i.ibb.co/YBxkyWP/Chrono.png">
+</head>
+<body>
+    <div id="mobile-block-message" class="block-message">
+        <p>Sorry, to open this page go to a Computer.</p>
+      </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+  function checkScreenWidth() {
+    var mainContent = document.getElementById('main-content');
+    var blockMessage = document.getElementById('mobile-block-message');
+    if (window.innerWidth < 768) { // You can set the width threshold as needed
+      mainContent.style.display = 'none';
+      blockMessage.style.display = 'block';
+    } else {
+      mainContent.style.display = 'block';
+      blockMessage.style.display = 'none';
+    }
+  }
+
+  // Check on initial load
+  checkScreenWidth();
+
+  // Check on window resize
+  window.addEventListener('resize', checkScreenWidth);
+});
+
+    </script>
+    <div class="booty">
+      <nav class="navbar">
+        <div id="mySidenav" class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()" style="float: left;">&times;</a>
+            <div class="nbutton">
+                <a href="{{ url_for('dashboard') }}"><i class="fas fa-tachometer-alt" style="color: rgba(0, 0, 0, 0.6);"></i>&nbsp; Dashboard</a>
+                <a href="{{ url_for('manage_tasks') }}"><i class="icon fas fa-tasks" style="color: rgba(0, 182, 182, 0.603);"></i>&nbsp; Tasks</a>
+                <a href="{{ url_for('clubs.list_clubs') }}"><i class="fas fa-users" style="color: rgba(179, 0, 0, 0.601);"></i>&nbsp; Club</a>
+                <a href="{{ url_for('league_leaderboard' , league_name=current_user.league) }}"><i class="fas fa-trophy" style="color: rgb(255, 230, 4);"></i>&nbsp; Leaderboard</a>
+                <a href="{{ url_for('resources') }}"><i class="fas fa-book" style="color: rgba(0, 0, 255, 0.607);"></i>&nbsp; Resources</a>
+                <p style="font-weight: 300; color: rgb(107, 105, 105); position: fixed; left: 2%; bottom: 2%; ">Chrono v 0.13.5</p>
+            </div>
+        </div>  
+          
+          <div class="logo-container">
+            <span style="float: left; font-size:30px;cursor:pointer; padding: 4px;" onclick="openNav()">&#9776 </span>
+            <img src="https://i.ibb.co/YBxkyWP/Chrono.png" alt="Chrono Logo" style="float: left;"> <p style="color: black; float: left; font-weight: 550; margin-top: 15px;"> CHRON</p><p style="color: #8642f5;float: right; font-weight: 550; margin-top: 15px;">O</p>
+          </div>
+    
+          <script>
+          function openNav() {
+            document.getElementById("mySidenav").style.width = "18.301610541727672035139092240117%";
+            document.getElementById('overlay').style.display = 'block';
+          }
+          
+          function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            document.getElementById('overlay').style.display = 'none';
+          }
+          </script>
+    
+        <div class="profile">
+            <form class="searchu" action="{{ url_for('search.search_users') }}" method="GET">
+                <input class="findfriends" type="text" name="query" placeholder="Find Your Friends...">
+                <button class="findfrbtn" type="submit">Search</button>
+            </form>
+           <div class="click"> 
+    <img src="{{ url_for('static', filename='uploads/' + current_user.profile_image) }}" alt="Profile Picture" class="profile-pic">
+    <span class="profile-name">{{current_user.display_name or current_user.username}}</span>
+    <div class="dropdown-menu">
+        <img src="{{ url_for('static', filename='uploads/' + current_user.profile_image) }}" alt="Profile Picture" class="profile-p">
+        <h1 class="profile-n">{{ current_user.display_name or current_user.username }}</h1>
+        <p class="profile-n">Level {{ current_user.level }}</p>
+        <a href="{{ url_for('dashboard') }}" style="float: left;"><i class="icon fas fa-home"></i> Dashboard</a>
+        <a href="{{ url_for('profile', username=current_user.username) }}" style="float: left;"><i class="icon fas fa-user"></i> Profile</a>
+        <a href="{{ url_for('settings') }}" style="float: left;"><i class="icon fas fa-cog"></i> Settings</a>
+        <a href="#" style="float: left;"><i class="fas fa-lock"></i>&nbsp;Privacy Policy</a>
+        <a href="{{ url_for('logout') }}" style="float: left;"><i class="icon fas fa-sign-out-alt"></i> Logout</a>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var profile = document.querySelector('.click');
+                var dropdown = document.querySelector('.dropdown-menu');
+            
+                profile.addEventListener('click', function() {
+                    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+                });
+            
+                // Close the dropdown if clicked outside
+                window.addEventListener('click', function(event) {
+                    if (!profile.contains(event.target)) {
+                        dropdown.style.display = 'none';
+                    }
+                });
+            });
+            </script>
+    </div>
+        </div>
+    </div>
+    </nav>
+    <div class="content">
+        <h1 style="padding: 10px 20px;">Edit Your Profile</h1>
+    <form method="POST" action="{{ url_for('update_profile') }}" enctype="multipart/form-data">
+        <!-- Include CSRF token -->
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="data">
+        <label class="label" for="display_name">Display Name:</label>
+        <input class="field" type="text" id="display_name" name="display_name" value="{{ user.display_name }}">
+        <br>        
+        </div>
+        <div class="data">
+        <label class="label" for="bio">Bio:</label>
+        <textarea class="field" id="bio" name="bio">{{ user.bio }}</textarea>
+        <br>                
+    </div>
+    <div class="data">
+      <h2>Social Media</h2>
+      <label class="label" for="social_links"><i style="color: red;" class="fab fa-youtube"></i>&nbsp;YouTube</label>
+      <input class="field" type="text" id="social_links" name="youtube" value="{{ user.youtube }}" placeholder="like this:- natewalkr123">
+      <br>        
+      <br>        
+      <br>        
+      <br>        
+      <label class="label" for="social_links"><i style="color: blue;" class="fab fa-facebook"></i>&nbsp;Facebook</label>
+      <input class="field" type="text" id="social_links" name="facebook" value="{{ user.facebook }}" placeholder="like this:- natewalkr123">
+      <br>        
+      <br>        
+      <br>        
+      <br>        
+      <label class="label" for="social_links"><i style="color: rgb(88, 188, 221);" class="fab fa-twitter"></i>&nbsp;Twitter</label>
+      <input class="field" type="text" id="social_links" name="twitter" value="{{ user.twitter }}" placeholder="like this:- natewalkr123">
+      <br>        
+      <br>        
+      <br>        
+      <br>        
+      <label class="label" for="social_links"><i style="color: purple;" class="fab fa-instagram"></i>&nbsp;Instagram</label>
+      <input class="field" type="text" id="social_links" name="insta" value="{{ user.insta }}" placeholder="like this:- natewalkr123">
+      <br>        
+      <br>        
+      <br>        
+      <br>        
+      <label class="label" for="social_links"><i class="fab fa-tiktok"></i>&nbsp;TikTok</label>
+      <input class="field" type="text" id="social_links" name="tiktok" value="{{ user.tiktok }}" placeholder="like this:- natewalkr123">
+      <br>
+      <br>        
+      <br>        
+      <br>        
+    </div>
+    <div class="data">                   
+      <button class="subtn" type="submit">Update Profile</button>
+      
+  </div>
+  
+  </form>  
+        <div style="padding: 50px 0px;"><hr>
+            <label class="label" for="profile_picture">Profile Picture:</label>
+              <a  href="{{ url_for('upload')}}"><button class="fbtn">Update</button></a>
+        </div>
+
+    </div>
+</body>
+</html>

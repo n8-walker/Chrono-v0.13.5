@@ -1,0 +1,235 @@
+.left-column {
+    position: fixed;
+    left: 0%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ebebeb;
+    border-radius: 10px;
+    width: 69%;
+    margin: 20px;
+}
+
+.right-column {
+    position: fixed;
+    right: 0%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffafff;
+    border-radius: 10px;
+    width: 21%;
+    margin: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.add-task-btn {
+    background-color: #8642f5;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+table th {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.right-column .progress-block, .right-column .overall-progress-block {
+    margin-bottom: 20px;
+    background-color: #ffafff;
+}
+
+.progress-block progress, .overall-progress-block progress {
+    width: 100%;
+    height: 20px;
+    margin-bottom: 10px;
+}
+
+.popup-form {
+    display: none;
+    position: fixed;
+    z-index: 0;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow: auto;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.popup-form form {
+    background-color: #ffffff;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 5px;
+    width: 70%;
+    max-width: 500px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    font-family: 'Montserrat', sans-serif;
+}
+
+.popup-form h2 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.popup-form label {
+    font-weight: bold;
+    padding: 5px;
+}
+
+.popup-form input, .popup-form select {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.popup-form input {
+  width: 90%;
+}
+
+.popup-form select {
+  width: 95%;
+}
+.popup-form button {
+    background-color: #8642f5;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.popup-form .cancel-btn {
+    background-color: #f44336;
+    margin-left: 10px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.high{
+    background-color: rgb(253, 196, 196);
+    color: red;
+}
+
+.Medium{
+    background-color: rgb(244, 253, 196);
+    color: rgb(175, 164, 0);
+}
+
+
+.low{
+    background-color: rgb(209, 253, 196);
+    color: rgb(0, 175, 0);
+}
+
+/* stylestask.css */
+
+.task {
+    margin-bottom: 20px;
+}
+
+progress {
+    width: 100%;
+    height: 20px;
+    border-radius: 8px;
+    background-color: #ddd;
+    box-shadow: 0 0 18px rgba(0, 0, 0, 0.1);
+}
+
+progress::-webkit-progress-bar {
+    background-color: #ddd;
+    border-radius: 8px;
+}
+
+progress::-webkit-progress-value {
+    background-color: #fac000;
+    border-radius: 8px;
+}
+
+
+
+/* Block message styles */
+.block-message {
+    display: none;
+    text-align: center;
+    padding: 20px;
+    background-color: lightcoral;
+    color: white;
+    font-size: 1.5em;
+  }
+
+
+  
+  /* Styles for tablets and above */
+  @media (max-width: 1267px) {
+    .booty {
+        display: none;
+    }
+
+    .block-message{
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+    }
+
+    p{
+        padding-top: 40%;
+        text-align: center;
+        font-size: larger;
+    }
+
+  
+  /* Styles for desktops and above */
+  @media (max-width: 768px) {
+    .container {
+      display: none;
+    }
+  }
+  
+  
+  /* Fluid typography */
+  body {
+    font-size: calc(1em + 1vw);
+  }
+  
+
+  /* Styles for tablets and above */
+  @media (max-width: 768px) {
+    .right-column {
+        display: none;
+    }
+
+    table {
+        display: none;
+    }
+
+     }
+
+    }

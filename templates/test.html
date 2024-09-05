@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toggle Switch</title>
+<style>
+    /* Hide default checkbox */
+.toggle-switch input {
+  display: none;
+}
+
+/* Style the label as a slider */
+.toggle-switch label {
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  background-color: #ccc;
+  border-radius: 34px;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+/* Add the slider */
+.toggle-switch label::before {
+  content: "";
+  position: absolute;
+  height: 26px;
+  width: 26px;
+  border-radius: 50%;
+  background: white;
+  left: 4px;
+  top: 4px;
+  transition: transform 0.3s;
+}
+
+/* Change background color when checked */
+.toggle-switch input:checked + label {
+  background-color: #4caf50;
+}
+
+/* Move the slider when checked */
+.toggle-switch input:checked + label::before {
+  transform: translateX(26px);
+}
+
+</style>></head>
+<body>
+  <div class="toggle-switch">
+    <input type="checkbox" id="toggle">
+    <label for="toggle"></label>
+  </div>
+</body>
+</html>

@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Resources</title>
+    <link rel="stylesheet" href="/static/css/grade.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/uni.css')}}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="icon" href="https://i.ibb.co/YBxkyWP/Chrono.png">
+</head>
+<body>
+    <nav class="navbar">
+        <div id="mySidenav" class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()" style="float: left;">&times;</a>
+            <div class="nbutton">
+                <a href="{{ url_for('dashboard') }}"><i class="fas fa-tachometer-alt" style="color: rgba(0, 0, 0, 0.6);"></i>&nbsp; Dashboard</a>
+                <a href="{{ url_for('manage_tasks') }}"><i class="icon fas fa-tasks" style="color: rgba(0, 182, 182, 0.603);"></i>&nbsp; Tasks</a>
+                <a href="{{ url_for('clubs.list_clubs') }}"><i class="fas fa-users" style="color: rgba(179, 0, 0, 0.601);"></i>&nbsp; Club</a>
+                <a href="{{ url_for('league_leaderboard' , league_name=current_user.league) }}"><i class="fas fa-trophy" style="color: rgb(255, 230, 4);"></i>&nbsp; Leaderboard</a>
+                <a href="{{ url_for('resources') }}"><i class="fas fa-book" style="color: rgba(0, 0, 255, 0.607);"></i>&nbsp; Resources</a>
+                <p style="font-weight: 300; color: rgb(107, 105, 105); position: fixed; left: 2%; bottom: 2%; ">Chrono v 0.13.5</p>
+            </div>
+        </div>  
+          
+          <div class="logo-container">
+            <span style="float: left; font-size:30px;cursor:pointer; padding: 4px;" onclick="openNav()">&#9776 </span>
+            <img src="https://i.ibb.co/YBxkyWP/Chrono.png" alt="Chrono Logo" style="float: left;"> <p style="color: black; float: left; font-weight: 550; margin-top: 15px;"> CHRON</p><p style="color: #8642f5;float: right; font-weight: 550; margin-top: 15px;">O</p>
+          </div>
+    
+          <script>
+          function openNav() {
+            document.getElementById("mySidenav").style.width = "18.301610541727672035139092240117%";
+            document.getElementById('overlay').style.display = 'block';
+          }
+          
+          function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            document.getElementById('overlay').style.display = 'none';
+          }
+          </script>
+    
+        <div class="profile">
+            <form class="searchu" action="{{ url_for('search.search_users') }}" method="GET">
+                <input class="findfriends" type="text" name="query" placeholder="Find Your Friends...">
+                <button class="findfrbtn" type="submit">Search</button>
+            </form>
+           <div class="click"> 
+    <img src="{{ url_for('static', filename='uploads/' + current_user.profile_image) }}" alt="Profile Picture" class="profile-pic">
+    <span class="profile-name">{{current_user.display_name or current_user.username}}</span>
+    <div class="dropdown-menu">
+        <img src="{{ url_for('static', filename='uploads/' + current_user.profile_image) }}" alt="Profile Picture" class="profile-p">
+        <h1 class="profile-n">{{ current_user.display_name or current_user.username }}</h1>
+        <p class="profile-n">Level {{ current_user.level }}</p>
+        <a href="{{ url_for('dashboard') }}" style="float: left;"><i class="icon fas fa-home"></i> Dashboard</a>
+        <a href="{{ url_for('profile', username=current_user.username) }}" style="float: left;"><i class="icon fas fa-user"></i> Profile</a>
+        <a href="{{ url_for('settings') }}" style="float: left;"><i class="icon fas fa-cog"></i> Settings</a>
+        <a href="#" style="float: left;"><i class="fas fa-lock"></i>&nbsp;Privacy Policy</a>
+        <a href="{{ url_for('logout') }}" style="float: left;"><i class="icon fas fa-sign-out-alt"></i> Logout</a>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var profile = document.querySelector('.click');
+                var dropdown = document.querySelector('.dropdown-menu');
+            
+                profile.addEventListener('click', function() {
+                    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+                });
+            
+                // Close the dropdown if clicked outside
+                window.addEventListener('click', function(event) {
+                    if (!profile.contains(event.target)) {
+                        dropdown.style.display = 'none';
+                    }
+                });
+            });
+            </script>
+    </div>
+        </div>
+    </div>
+    </nav>
+    <div id="overlay"></div>
+    <div class="container">
+        <h1>Learning Resources for Grade 6</h1>
+        <div class="tabs">
+            <button class="tablinks" onclick="openTab(event, 'EM')">English Medium</button>
+            <button class="tablinks" onclick="openTab(event, 'SM')">Sinhala Medium</button>
+        </div>
+
+        <div id="EM" class="tabcontent">
+            <h2>English Medium</h2>
+            <div class="resources">
+                <div class="resource">
+                    <h3>Youtube Channels</h3>
+                    <ul>
+                        <li><a href="https://www.youtube.com/channel/UCxlJ45KjG4XVcQ_hd8j227A" target="_blank">Peakaboo Kidz (Science)</a></li>
+                        <li><a href="https://www.youtube.com/@DPEducationOLSubjects/playlists" target="_blank">DP education (O/L)</a></li>
+                        <li><a href="https://www.youtube.com/@UpulMoragodaarachchi/playlists" target="_blank">Upul Moragodaarachchi (English)</a></li>
+                        <li><a href="https://www.youtube.com/@janakasirhistoryclass" target="_blank">Janaka Sir History Class (English)</a></li>
+                    </ul>
+                </div>
+                <div class="resource">
+                    <h3>Past Papers</h3>
+                    <ul>
+                        <li>
+                    <button class="accordion">Term 1</button>
+                    <div class="panel">
+                        <ul>
+                            <li>                    
+                                <button class="accordion">2020</button>
+                                <div class="panel">
+                                    <ul>
+
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>                    
+                                <button class="accordion">2019</button>
+                                <div class="panel">
+                                    <ul>
+                                        <li><a href="https://www.e-thaksalawa.moe.gov.lk/moodle/pluginfile.php/197541/mod_resource/content/1/SM_Budd_T1_G6_I%2CII%20pp%20%20Ans_2019.pdf?forcedownload=1" target="_blank">Buddhism</a></li>
+                                        <li><a href="https://www.e-thaksalawa.moe.gov.lk/moodle/pluginfile.php/197573/mod_resource/content/1/SM_Sin_T1_G6_I%2CII%20pp%20%20Ans_2019.pdf?forcedownload=1" target="_blank">Sinhala</a></li>
+                                        <li><a href="https://www.e-thaksalawa.moe.gov.lk/moodle/pluginfile.php/197541/mod_resource/content/1/SM_Budd_T1_G6_I%2CII%20pp%20%20Ans_2019.pdf?forcedownload=1" target="_blank">Math</a></li>
+                                        <li><a href="https://www.e-thaksalawa.moe.gov.lk/moodle/pluginfile.php/125126/mod_resource/content/1/SM_Bud_G6_T3_I%2CII%20pp%20%20Ans_2018.pdf?forcedownload=1" target="_blank">ICT</a></li>
+                                        <li><a href="https://www.e-thaksalawa.moe.gov.lk/moodle/pluginfile.php/197541/mod_resource/content/1/SM_Budd_T1_G6_I%2CII%20pp%20%20Ans_2019.pdf?forcedownload=1" target="_blank">Science</a></li>
+                                        <li><a href="https://www.e-thaksalawa.moe.gov.lk/moodle/pluginfile.php/125126/mod_resource/content/1/SM_Bud_G6_T3_I%2CII%20pp%20%20Ans_2018.pdf?forcedownload=1" target="_blank">Tamil</a></li>
+                                        <li><a href="https://www.e-thaksalawa.moe.gov.lk/moodle/pluginfile.php/197541/mod_resource/content/1/SM_Budd_T1_G6_I%2CII%20pp%20%20Ans_2019.pdf?forcedownload=1" target="_blank">History</a></li>
+                                        <li><a href="https://www.e-thaksalawa.moe.gov.lk/moodle/pluginfile.php/125126/mod_resource/content/1/SM_Bud_G6_T3_I%2CII%20pp%20%20Ans_2018.pdf?forcedownload=1" target="_blank">Geography</a></li>
+                                        <li><a href="https://www.e-thaksalawa.moe.gov.lk/moodle/pluginfile.php/197541/mod_resource/content/1/SM_Budd_T1_G6_I%2CII%20pp%20%20Ans_2019.pdf?forcedownload=1" target="_blank">Civics</a></li>
+                                        <li><a href="https://www.e-thaksalawa.moe.gov.lk/moodle/pluginfile.php/125126/mod_resource/content/1/SM_Bud_G6_T3_I%2CII%20pp%20%20Ans_2018.pdf?forcedownload=1" target="_blank">Health</a></li>
+                                        <li><a href="https://www.e-thaksalawa.moe.gov.lk/moodle/pluginfile.php/197541/mod_resource/content/1/SM_Budd_T1_G6_I%2CII%20pp%20%20Ans_2019.pdf?forcedownload=1" target="_blank">Catholic</a></li>
+                                        <li><a href="https://www.e-thaksalawa.moe.gov.lk/moodle/pluginfile.php/125126/mod_resource/content/1/SM_Bud_G6_T3_I%2CII%20pp%20%20Ans_2018.pdf?forcedownload=1" target="_blank">Eastern Music</a></li>
+                                        <li><a href="https://www.e-thaksalawa.moe.gov.lk/moodle/pluginfile.php/197541/mod_resource/content/1/SM_Budd_T1_G6_I%2CII%20pp%20%20Ans_2019.pdf?forcedownload=1" target="_blank">Western Music</a></li>
+                                        <li><a href="https://www.e-thaksalawa.moe.gov.lk/moodle/pluginfile.php/125126/mod_resource/content/1/SM_Bud_G6_T3_I%2CII%20pp%20%20Ans_2018.pdf?forcedownload=1" target="_blank">Arts</a></li>
+                                        <li><a href="https://www.e-thaksalawa.moe.gov.lk/moodle/pluginfile.php/197541/mod_resource/content/1/SM_Budd_T1_G6_I%2CII%20pp%20%20Ans_2019.pdf?forcedownload=1" target="_blank">Dancing</a></li>
+                                        <li><a href="https://www.e-thaksalawa.moe.gov.lk/moodle/pluginfile.php/125126/mod_resource/content/1/SM_Bud_G6_T3_I%2CII%20pp%20%20Ans_2018.pdf?forcedownload=1" target="_blank">Drama</a></li>
+                                        <li><a href="https://www.e-thaksalawa.moe.gov.lk/moodle/pluginfile.php/197541/mod_resource/content/1/SM_Budd_T1_G6_I%2CII%20pp%20%20Ans_2019.pdf?forcedownload=1" target="_blank">English</a></li>
+                                        <!-- Add more term 1 past papers -->
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>                    
+                                <button class="accordion">2018</button>
+                                <div class="panel">
+                                    <ul>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 1</a></li>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 2</a></li>
+                                        <!-- Add more term 1 past papers -->
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>                    
+                                <button class="accordion">2017</button>
+                                <div class="panel">
+                                    <ul>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 1</a></li>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 2</a></li>
+                                        <!-- Add more term 1 past papers -->
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>                    
+                                <button class="accordion">2016</button>
+                                <div class="panel">
+                                    <ul>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 1</a></li>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 2</a></li>
+                                        <!-- Add more term 1 past papers -->
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    </li>
+                    <li>
+                    <button class="accordion">Term 2</button>
+                    <div class="panel">
+                        <ul>
+                            <li>                    
+                                <button class="accordion">2020</button>
+                                <div class="panel">
+                                    <ul>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 1</a></li>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 2</a></li>
+                                        <!-- Add more term 1 past papers -->
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>                    
+                                <button class="accordion">2019</button>
+                                <div class="panel">
+                                    <ul>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 1</a></li>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 2</a></li>
+                                        <!-- Add more term 1 past papers -->
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>                    
+                                <button class="accordion">2018</button>
+                                <div class="panel">
+                                    <ul>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 1</a></li>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 2</a></li>
+                                        <!-- Add more term 1 past papers -->
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>                    
+                                <button class="accordion">2017</button>
+                                <div class="panel">
+                                    <ul>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 1</a></li>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 2</a></li>
+                                        <!-- Add more term 1 past papers -->
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>                    
+                                <button class="accordion">2016</button>
+                                <div class="panel">
+                                    <ul>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 1</a></li>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 2</a></li>
+                                        <!-- Add more term 1 past papers -->
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <li>
+                    <button class="accordion">Term 3</button>
+                    <div class="panel">
+                        <ul>
+                            <li>                    
+                                <button class="accordion">2020</button>
+                                <div class="panel">
+                                    <ul>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 1</a></li>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 2</a></li>
+                                        <!-- Add more term 1 past papers -->
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>                    
+                                <button class="accordion">2019</button>
+                                <div class="panel">
+                                    <ul>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 1</a></li>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 2</a></li>
+                                        <!-- Add more term 1 past papers -->
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>                    
+                                <button class="accordion">2018</button>
+                                <div class="panel">
+                                    <ul>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 1</a></li>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 2</a></li>
+                                        <!-- Add more term 1 past papers -->
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>                    
+                                <button class="accordion">2017</button>
+                                <div class="panel">
+                                    <ul>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 1</a></li>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 2</a></li>
+                                        <!-- Add more term 1 past papers -->
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>                    
+                                <button class="accordion">2016</button>
+                                <div class="panel">
+                                    <ul>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 1</a></li>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 2</a></li>
+                                        <!-- Add more term 1 past papers -->
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    </li>
+                </ul>
+                </div>
+                <div class="resource">
+                    <h3>Online Sites</h3>
+                    <ul>
+                        <li><a href="https://www.example.com" target="_blank">Site 1</a></li>
+                        <li><a href="https://www.example2.com" target="_blank">Site 2</a></li>
+                        <!-- Add more sites -->
+                    </ul>
+                </div>
+                <div class="resource">
+                    <h3>Textbooks</h3>
+                    <ul>
+                        <li><a href="textbook_link1.pdf" target="_blank">Textbook 1</a></li>
+                        <li><a href="textbook_link2.pdf" target="_blank">Textbook 2</a></li>
+                        <!-- Add more textbooks -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="SM" class="tabcontent">
+            <h2>Sinhala Medium</h2>
+            <div class="resources">
+                <div class="resource">
+                    <h3>Youtube Channels</h3>
+                    <ul>
+                        <li><a href="https://www.youtube.com/@DPEducationOLSubjects/playlists" target="_blank">DP education (O/L)</a></li>
+                        <li><a href="https://www.youtube.com/@UpulMoragodaarachchi/playlists" target="_blank">Upul Moragodaarachchi (English)</a></li>
+                        <li><a href="https://www.youtube.com/@janakasirhistoryclass" target="_blank">Janaka Sir History Class (English)</a></li>
+                        <!-- Add more channels -->
+                    </ul>
+                </div>
+                <div class="resource">
+                    <h3>Past Papers</h3>
+                    <ul>
+                        <li>
+                    <button class="accordion">Term 1</button>
+                    <div class="panel">
+                        <ul>
+                            <li>                    
+                                <button class="accordion">2020</button>
+                                <div class="panel">
+                                    <ul>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 1</a></li>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 2</a></li>
+                                        <!-- Add more term 1 past papers -->
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>                    
+                                <button class="accordion">2019</button>
+                                <div class="panel">
+                                    <ul>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 1</a></li>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 2</a></li>
+                                        <!-- Add more term 1 past papers -->
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>                    
+                                <button class="accordion">2018</button>
+                                <div class="panel">
+                                    <ul>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 1</a></li>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 2</a></li>
+                                        <!-- Add more term 1 past papers -->
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>                    
+                                <button class="accordion">2017</button>
+                                <div class="panel">
+                                    <ul>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 1</a></li>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 2</a></li>
+                                        <!-- Add more term 1 past papers -->
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>                    
+                                <button class="accordion">2016</button>
+                                <div class="panel">
+                                    <ul>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 1</a></li>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 2</a></li>
+                                        <!-- Add more term 1 past papers -->
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    </li>
+                    <li>
+                    <button class="accordion">Term 2</button>
+                    <div class="panel">
+                        <ul>
+                            <li>                    
+                                <button class="accordion">2020</button>
+                                <div class="panel">
+                                    <ul>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 1</a></li>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 2</a></li>
+                                        <!-- Add more term 1 past papers -->
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>                    
+                                <button class="accordion">2019</button>
+                                <div class="panel">
+                                    <ul>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 1</a></li>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 2</a></li>
+                                        <!-- Add more term 1 past papers -->
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>                    
+                                <button class="accordion">2018</button>
+                                <div class="panel">
+                                    <ul>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 1</a></li>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 2</a></li>
+                                        <!-- Add more term 1 past papers -->
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>                    
+                                <button class="accordion">2017</button>
+                                <div class="panel">
+                                    <ul>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 1</a></li>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 2</a></li>
+                                        <!-- Add more term 1 past papers -->
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>                    
+                                <button class="accordion">2016</button>
+                                <div class="panel">
+                                    <ul>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 1</a></li>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 2</a></li>
+                                        <!-- Add more term 1 past papers -->
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <li>
+                    <button class="accordion">Term 3</button>
+                    <div class="panel">
+                        <ul>
+                            <li>                    
+                                <button class="accordion">2020</button>
+                                <div class="panel">
+                                    <ul>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 1</a></li>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 2</a></li>
+                                        <!-- Add more term 1 past papers -->
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>                    
+                                <button class="accordion">2019</button>
+                                <div class="panel">
+                                    <ul>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 1</a></li>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 2</a></li>
+                                        <!-- Add more term 1 past papers -->
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>                    
+                                <button class="accordion">2018</button>
+                                <div class="panel">
+                                    <ul>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 1</a></li>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 2</a></li>
+                                        <!-- Add more term 1 past papers -->
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>                    
+                                <button class="accordion">2017</button>
+                                <div class="panel">
+                                    <ul>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 1</a></li>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 2</a></li>
+                                        <!-- Add more term 1 past papers -->
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>                    
+                                <button class="accordion">2016</button>
+                                <div class="panel">
+                                    <ul>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 1</a></li>
+                                        <li><a href="pastpapers/term1_em" target="_blank">Term 1 Past Paper 2</a></li>
+                                        <!-- Add more term 1 past papers -->
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    </li>
+                </ul>
+                </div>
+                <div class="resource">
+                    <h3>Online Sites</h3>
+                    <ul>
+                        <li><a href="https://www.example.com" target="_blank">Site 1</a></li>
+                        <li><a href="https://www.example2.com" target="_blank">Site 2</a></li>
+                        <!-- Add more sites -->
+                    </ul>
+                </div>
+                <div class="resource">
+                    <h3>Textbooks</h3>
+                    <ul>
+                        <li><a href="textbook_link1.pdf" target="_blank">Textbook 1</a></li>
+                        <li><a href="textbook_link2.pdf" target="_blank">Textbook 2</a></li>
+                        <!-- Add more textbooks -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        // Default open
+        document.getElementsByClassName('tablinks')[0].click();
+
+        // Accordion
+        var acc = document.getElementsByClassName("accordion");
+        for (var i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.display === "block") {
+                    panel.style.display = "none";
+                } else {
+                    panel.style.display = "block";
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+.container {
+    padding: 0 5%;
+    box-sizing: border-box; /* Ensure padding is included in width */
+  }
+
+.form-c-club input,textarea{
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 20px 0;
+}
+
+.form-c-club button{
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+    background-color: #8642f5;
+    font-family: 'Montserrat', sans-serif;
+    color: white;
+}
+
+.form-c-club button:hover {
+    background-color: #6c34c4;
+}
+
+.form-c-club a{
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+    background-color: #f1eafc;
+    font-family: 'Montserrat', sans-serif;
+    color: black;
+    text-decoration: none;
+    float: right;
+    position: relative;
+    top: -35px;
+}

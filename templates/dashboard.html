@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/stylesdashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/uni.css')}}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Electrolize&display=swap" rel="stylesheet">
+    <link rel="icon" href="https://i.ibb.co/YBxkyWP/Chrono.png">
+    <title>Dashboard - Chrono</title>
+</head>
+<body>
+    <div id="mobile" class="mobile">
+    
+    </div>
+    <div class="booty">
+        <nav class="navbar">
+            <div id="mySidenav" class="sidenav">
+                <a href="javascript:void(0)" class="closebtn" onclick="closeNav()" style="float: left;">&times;</a>
+                <div class="nbutton">
+                    <a href="{{ url_for('dashboard') }}"><i class="fas fa-tachometer-alt" style="color: rgba(0, 0, 0, 0.6);"></i>&nbsp; Dashboard</a>
+                    <a href="{{ url_for('manage_tasks') }}"><i class="icon fas fa-tasks" style="color: rgba(0, 182, 182, 0.603);"></i>&nbsp; Tasks</a>
+                    <a href="{{ url_for('clubs.list_clubs') }}"><i class="fas fa-users" style="color: rgba(179, 0, 0, 0.601);"></i>&nbsp; Club</a>
+                    <a href="{{ url_for('league_leaderboard' , league_name=current_user.league) }}"><i class="fas fa-trophy" style="color: rgb(255, 230, 4);"></i>&nbsp; Leaderboard</a>
+                    <a href="{{ url_for('resources') }}"><i class="fas fa-book" style="color: rgba(0, 0, 255, 0.607);"></i>&nbsp; Resources</a>
+                    <p style="font-weight: 300; color: rgb(107, 105, 105); position: fixed; left: 2%; bottom: 2%; ">Chrono v 0.13.5</p>
+                </div>
+            </div>  
+              
+              <div class="logo-container">
+                <span style="float: left; font-size:30px;cursor:pointer; padding: 4px;" onclick="openNav()">&#9776 </span>
+                <img src="https://i.ibb.co/YBxkyWP/Chrono.png" alt="Chrono Logo" style="float: left;"> <p style="color: black; float: left; font-weight: 550; margin-top: 15px;"> CHRON</p><p style="color: #8642f5;float: right; font-weight: 550; margin-top: 15px;">O</p>
+              </div>              
+              <script>
+                if (window.innerWidth <= 768) {
+                    widthPercentage = "100%";
+                } else {
+                    widthPercentage = "18.301610541727672035139092240117%";
+                }
+                function openNav() {
+                  document.getElementById("mySidenav").style.width = widthPercentage;
+                  document.getElementById('overlay').style.display = 'block';
+                }
+              
+                function closeNav() {
+                  document.getElementById("mySidenav").style.width = "0";
+                  document.getElementById('overlay').style.display = 'none';
+                }
+              </script>
+              
+        
+            <div class="profile">
+                <form class="searchu" action="{{ url_for('search.search_users') }}" method="GET">
+                    <input class="findfriends" type="text" name="query" placeholder="Find Your Friends...">
+                    <button class="findfrbtn" type="submit">Search</button>
+                </form>
+               <div class="click"> 
+        <img src="{{ url_for('static', filename='uploads/' + current_user.profile_image) }}" alt="Profile Picture" class="profile-pic">
+        <span class="profile-name">{{current_user.display_name or current_user.username}}</span>
+
+            </div>
+        </div>
+        </nav>        
+        <div class="dropdown-menu">
+            <img src="{{ url_for('static', filename='uploads/' + current_user.profile_image) }}" alt="Profile Picture" class="profile-p">
+            <h1 class="profile-n">{{ current_user.display_name or current_user.username }}</h1>
+            <p class="profile-n">Level {{ current_user.level }}</p>
+            <a href="{{ url_for('dashboard') }}" style="float: left;"><i class="icon fas fa-home"></i> Dashboard</a>
+            <a href="{{ url_for('profile', username=current_user.username) }}" style="float: left;"><i class="icon fas fa-user"></i> Profile</a>
+            <a href="{{ url_for('settings') }}" style="float: left;"><i class="icon fas fa-cog"></i> Settings</a>
+            <a href="#" style="float: left;"><i class="fas fa-lock"></i>&nbsp;Privacy Policy</a>
+            <a href="{{ url_for('logout') }}" style="float: left;"><i class="icon fas fa-sign-out-alt"></i> Logout</a>
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    var profile = document.querySelector('.click');
+                    var dropdown = document.querySelector('.dropdown-menu');
+                
+                    profile.addEventListener('click', function() {
+                        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+                    });
+                
+                    // Close the dropdown if clicked outside
+                    window.addEventListener('click', function(event) {
+                        if (!profile.contains(event.target)) {
+                            dropdown.style.display = 'none';
+                        }
+                    });
+                });
+                </script>
+        </div>
+    <div id="overlay"></div>
+    <br>
+    <div class="tid">
+        <b><div class="time" id="local-time"></div></b>
+        <b><div class="date" id="dateDisplay"></div></b>
+    </div>
+     
+    <div class="container">
+        <h1 style="font-family: 'Montserrat', sans-serif;">Hello {{ current_user.display_name.split(' ')[0] or current_user.username }}!</h1>
+        <script>
+            function displayLocalTime() {
+                // Create a new Date object to get the current date and time
+                var now = new Date();
+    
+                // Extract the hours, minutes, and seconds from the Date object
+                var hours = now.getHours();
+                var minutes = now.getMinutes();
+                var seconds = now.getSeconds();
+    
+                // Format the time to ensure two digits for hours, minutes, and seconds
+                var timeString = hours.toString().padStart(2, '0') + ':'
+                                + minutes.toString().padStart(2, '0') + ':'
+                                + seconds.toString().padStart(2, '0');
+    
+                // Display the formatted time in the element with id "local-time"
+                document.getElementById('local-time').textContent = timeString;
+    
+                // Update the time every second (1000 milliseconds)
+                setTimeout(displayLocalTime, 1000);
+            }
+    
+            // Call the displayLocalTime function when the page loads
+            window.onload = displayLocalTime;
+
+
+            document.addEventListener("DOMContentLoaded", function() {
+    // Get the current date
+    const currentDate = new Date();
+
+    // Format the date (e.g., Month Day, Year)
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const formattedDate = currentDate.toLocaleDateString(undefined, options);
+
+    // Display the date in the HTML element
+    document.getElementById("dateDisplay").textContent = formattedDate;
+});
+
+        </script>
+        
+        <div class="content">            
+        <div class="upcomingt" style="height: 360px;">
+            <h2 style="text-align: center;"><i class="icon fas fa-tasks"></i> Upcoming Tasks</h2>
+            {% if task_count > 0 %}
+            <ol class="utl">
+                    {% for task in tasks %}
+                    <li>{{ task.description }} | {{ task.date }}</li>
+                    {% endfor %}
+            </ol>
+            <a href="/tasks"><button class="tmore"><i class="fas fa-external-link-alt"></i> View More</button></a>
+            {% else %}
+            <br><br><p style="padding: 20px 10px; font-weight: 400; text-align: center;"><i style="color: rgb(0, 119, 255); font-size: xx-large;text-align: center;" class="fas fa-thumbs-up"></i><br><br> No tasks left</p>   
+            <a href="/tasks"><button class="tmore"><i class="fas fa-external-link-alt"></i> Add Task</button></a>
+            {% endif %}
+        </div>
+            <div class="recent-activities">
+                <h2 style="text-align: center;"><i class="fas fa-bullseye"></i> My League</h2>
+                <p style="text-align: center; padding: 20px 10px; font-weight: 400; "><i style="color: #fac000; font-size: xx-large;text-align: center;" class="fas fa-star"></i> <br><br>You are in the <b>{{ current_user.league }}</b> <br>with <b>{{ current_user.xp_count }}</b> XP!</p>
+            </div>
+            <div class="noobj">
+                <iframe scrolling="no" width="100%" height="210px" src="{{ url_for('progress') }}" frameborder="0"></iframe>
+            </div>
+            <div class="lr">
+                <h2>Start Studying!</h2>
+                <p>Use our big study library to aid your education</p>
+                <button class="lrb" onclick="window.location.href='/resources'">
+                    <i class="fas fa-external-link-alt"></i>&nbsp;Resources
+                </button>
+            </div>            
+        </div><br>
+        <div class="resources">
+            <h2>New Quizzes Available in the Quizzes Aisle!</h2>
+            <p>Try them soon to earn XP and improve your skills.</p>
+            <button onclick="window.location.href='/quizzes'" style="font-family: 'Montserrat', sans-serif;">Explore Now</button>
+        </div>
+        <div class="sndcontainer">
+            <div class="timer">
+                <h2 style="text-align: center;"><i class="fas fa-clock"></i>&nbsp;Time Vault</h2>
+                <p style="padding: 0 20px;">Use a timer to keep yourself in the studymode. the timer has <b>Relaxing music</b> along with the timer</p>
+                <center><a href="/study/time"><button class="Upgrade">Timers</button></a></center>
+            </div>
+            <div class="gallery-container">
+                <h2 style="
+                           text-align: center;
+                           padding: 15px 50px;"><i class="fas fa-user"></i>Make friends</h2>
+                <div class="gallery-wrapper">
+                    <div class="arrow left" onclick="scrollLeft()">&#8249;</div>
+                        {% for user in users %}
+                        <div class="gallery-item">
+                            <img src="/static/uploads/{{ user.profile_image }}" alt="{{ user.display_name }}">
+                            <h3>{{ user.display_name }}</h3>
+                            <p>User: @{{ user.username }}</p><br>
+                            <button onclick="window.location.href='/profile/{{user.username}}'">View Profile</button>
+                        </div>
+                        {% endfor %}
+                        <div class="arrow right" onclick="scrollRight()">&#8250;</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="premium">
+        <h2 style="text-align: center;"><i class="fas fa-smile"></i>&nbsp;Buy or Donate</h2>
+        <p style="text-align: justify;padding: 0 20px; text-align: center;"><b>Nate Walker aka Chathurka Uddheepana(Me)</b> is maintaining this platform by <b>myself.</b> So if you want to help me you can either buy an <b>Upgrade or you can Donate.</b></p>
+        <center><a href="/donate"><button class="donate">Donate</button></a>
+        <a href="/upgrade"><button class="upgrade">Upgrade</button></a></center>  
+    </div>
+
+    <script>
+    const wrapper = document.querySelector('.gallery-wrapper');
+
+        function scrollLeft() {
+            // Calculate the amount to scroll
+            const scrollAmount = wrapper.clientWidth / 2;
+            
+            // Check current scroll position
+            if (wrapper.scrollLeft > 0) {
+                wrapper.scrollBy({
+                    left: -scrollAmount,
+                    behavior: 'smooth'
+                });
+            }
+        }
+        
+        function scrollRight() {
+            // Calculate the amount to scroll
+            const scrollAmount = wrapper.clientWidth / 2;
+            
+            // Check current scroll position
+            if (wrapper.scrollLeft + wrapper.clientWidth < wrapper.scrollWidth) {
+                wrapper.scrollBy({
+                    left: scrollAmount,
+                    behavior: 'smooth'
+                });
+            }
+        }
+        
+        // Optional: Debugging logs to ensure functions are firing
+        document.querySelector('.arrow.left').addEventListener('click', () => {
+            console.log('Left arrow clicked');
+            scrollLeft();
+        });
+        
+        document.querySelector('.arrow.right').addEventListener('click', () => {
+            console.log('Right arrow clicked');
+            scrollRight();
+        });
+        
+    </script>
+</div>
+</div>
+</body>
+</html>
+

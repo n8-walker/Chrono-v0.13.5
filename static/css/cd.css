@@ -1,0 +1,60 @@
+/* main.css */
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.container {
+    margin-top: 20px;
+}
+
+.club-details {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.club-details h1 {
+    font-size: 2em;
+    margin-bottom: 15px;
+    color: #4A90E2;
+}
+
+.club-details p {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+.club-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.club-actions form {
+    display: inline-block;
+}
+
+.btn-primary, .btn-success, .btn-danger {
+    font-size: 1em;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-transform: uppercase;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}

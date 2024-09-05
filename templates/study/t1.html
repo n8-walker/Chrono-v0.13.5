@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <style>
+        #timer {
+            font-size: 2em;
+            text-align: center;
+            margin-top: 25%;
+            font-family: 'Orbitron', sans-serif;
+            color: white;
+            font-weight: 550;
+            font-size: xx-larger;
+        }
+        #player {
+            display: none; /* Hide the YouTube player */
+        }
+
+                /* Style for the background video */
+            #bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+    background-size: cover;
+    overflow: hidden;
+        }
+
+    </style>
+</head>
+<body>
+    <video id="bg-video" autoplay loop muted>
+        <source src="https://videos.pexels.com/video-files/3163534/3163534-uhd_2560_1440_30fps.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
+    <h1><div id="timer">Loading...</div></h1>
+    <div id="player"></div> <!-- Hidden YouTube player -->
+    
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        let leaveCount = 0;
+        let timerInterval;
+
+        function onYouTubeIframeAPIReady() {
+            new YT.Player('player', {
+                height: '0',  // Set height and width to 0 to keep it hidden
+                width: '0',
+                videoId: 'yGi1MePEN-k',  // Replace with your YouTube video ID
+                playerVars: {
+                    autoplay: 1,
+                    loop: 1,
+                    playlist: 'yGi1MePEN-k',  // Loop the video
+                    controls: 0,  // Hide controls
+                    showinfo: 0,
+                    modestbranding: 1,
+                    iv_load_policy: 3
+                }
+            });
+        }
+
+        function startCountdown(duration) {
+            const startTime = new Date().getTime();
+            const endTime = startTime + duration;
+
+            const updateTimer = () => {
+                const now = new Date().getTime();
+                const timeLeft = endTime - now;
+
+                if (timeLeft <= 0) {
+                    document.getElementById('timer').innerHTML = 'Time\'s up!';
+                    clearInterval(timerInterval);
+                    return;
+                }
+
+                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+                document.getElementById('timer').innerHTML =
+                    `${hours.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}m ${seconds.toString().padStart(2, '0')}s`;
+            };
+
+            timerInterval = setInterval(updateTimer, 1000);
+            updateTimer();
+        }
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+            document.getElementById('timer').innerHTML = 'Timer stopped.';
+        }
+
+        const duration = 30 * 60 * 1000;  
+
+        startCountdown(duration);
+    </script>
+</body>
+</html>

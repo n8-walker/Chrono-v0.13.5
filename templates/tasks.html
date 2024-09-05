@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Tasks - Chrono</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/stylestask.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/uni.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="icon" href="https://i.ibb.co/YBxkyWP/Chrono.png">
+</head>
+<body>
+    <div id="mobile-block-message" class="block-message">
+        <p>Sorry, to open this page go to a Computer.</p>
+      </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+  function checkScreenWidth() {
+    var mainContent = document.getElementById('main-content');
+    var blockMessage = document.getElementById('mobile-block-message');
+    if (window.innerWidth < 768) { // You can set the width threshold as needed
+      mainContent.style.display = 'none';
+      blockMessage.style.display = 'block';
+    } else {
+      mainContent.style.display = 'block';
+      blockMessage.style.display = 'none';
+    }
+  }
+
+  // Check on initial load
+  checkScreenWidth();
+
+  // Check on window resize
+  window.addEventListener('resize', checkScreenWidth);
+});
+
+    </script>
+<div class="booty">
+    <nav class="navbar">
+        <div id="mySidenav" class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()" style="float: left;">&times;</a>
+            <div class="nbutton">
+                <a href="{{ url_for('dashboard') }}"><i class="fas fa-tachometer-alt" style="color: rgba(0, 0, 0, 0.6);"></i>&nbsp; Dashboard</a>
+                <a href="{{ url_for('manage_tasks') }}"><i class="icon fas fa-tasks" style="color: rgba(0, 182, 182, 0.603);"></i>&nbsp; Tasks</a>
+                <a href="{{ url_for('clubs.list_clubs') }}"><i class="fas fa-users" style="color: rgba(179, 0, 0, 0.601);"></i>&nbsp; Club</a>
+                <a href="{{ url_for('league_leaderboard' , league_name=current_user.league) }}"><i class="fas fa-trophy" style="color: rgb(255, 230, 4);"></i>&nbsp; Leaderboard</a>
+                <a href="{{ url_for('resources') }}"><i class="fas fa-book" style="color: rgba(0, 0, 255, 0.607);"></i>&nbsp; Resources</a>
+                <p style="font-weight: 300; color: rgb(107, 105, 105); position: fixed; left: 2%; bottom: 2%; ">Chrono v 0.13.5</p>
+            </div>
+        </div>  
+          
+          <div class="logo-container">
+            <span style="float: left; font-size:30px;cursor:pointer; padding: 4px;" onclick="openNav()">&#9776 </span>
+            <img src="https://i.ibb.co/YBxkyWP/Chrono.png" alt="Chrono Logo" style="float: left;"> <p style="color: black; float: left; font-weight: 550; margin-top: 15px;"> CHRON</p><p style="color: #8642f5;float: right; font-weight: 550; margin-top: 15px;">O</p>
+          </div>
+    
+          <script>
+          function openNav() {
+            document.getElementById("mySidenav").style.width = "18.301610541727672035139092240117%";
+            document.getElementById('overlay').style.display = 'block';
+          }
+          
+          function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            document.getElementById('overlay').style.display = 'none';
+          }
+          </script>
+    
+        <div class="profile">
+            <form class="searchu" action="{{ url_for('search.search_users') }}" method="GET">
+                <input class="findfriends" type="text" name="query" placeholder="Find Your Friends...">
+                <button class="findfrbtn" type="submit">Search</button>
+            </form>
+           <div class="click"> 
+    <img src="{{ url_for('static', filename='uploads/' + current_user.profile_image) }}" alt="Profile Picture" class="profile-pic">
+    <span class="profile-name">{{current_user.display_name or current_user.username}}</span>
+    <div class="dropdown-menu">
+        <img src="{{ url_for('static', filename='uploads/' + current_user.profile_image) }}" alt="Profile Picture" class="profile-p">
+        <h1 class="profile-n">{{ current_user.display_name or current_user.username }}</h1>
+        <p class="profile-n">Level {{ current_user.level }}</p>
+        <a href="{{ url_for('dashboard') }}" style="float: left;"><i class="icon fas fa-home"></i> Dashboard</a>
+        <a href="{{ url_for('profile', username=current_user.username) }}" style="float: left;"><i class="icon fas fa-user"></i> Profile</a>
+        <a href="{{ url_for('settings') }}" style="float: left;"><i class="icon fas fa-cog"></i> Settings</a>
+        <a href="#" style="float: left;"><i class="fas fa-lock"></i>&nbsp;Privacy Policy</a>
+        <a href="{{ url_for('logout') }}" style="float: left;"><i class="icon fas fa-sign-out-alt"></i> Logout</a>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var profile = document.querySelector('.click');
+                var dropdown = document.querySelector('.dropdown-menu');
+            
+                profile.addEventListener('click', function() {
+                    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+                });
+            
+                // Close the dropdown if clicked outside
+                window.addEventListener('click', function(event) {
+                    if (!profile.contains(event.target)) {
+                        dropdown.style.display = 'none';
+                    }
+                });
+            });
+            </script>
+    </div>
+        </div>
+    </div>
+    </nav>   
+        <div class="left-column">
+            <h2><i class="icon fas fa-tasks"></i> Tasks</h2>
+            <button class="add-task-btn" onclick="openForm()"><i class="icon fas fa-pencil-alt"></i> Add Task</button>
+
+            <!-- Tasks List Table -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Number</th>
+                        <th>Description</th>
+                        <th>Date</th>
+                        <th>Priority</th>
+                        <th>Type</th>
+                        <th>Done?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if len_t > 0 %}
+                    {% for task in tasks %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ task.description }}</td>
+                        <td>{{ task.date }}</td>
+                        <td>{{ task.priority }}</td>
+                        <td>{{ task.type }}</td>
+                        <td>
+                            <form action="{{ url_for('mark_task_done', task_id=task.id) }}" method="POST">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <input type="checkbox" name="done" onclick="this.form.submit()" {% if task.done %}checked{% endif %}>
+                                {{ task.description }} - {{ task.date.strftime('%Y-%m-%d') }}
+                            </form>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                {% else %}
+                <p style="text-align: center;">No tasks left. Good Job!</p>
+                {% endif %}
+            </table>
+        </div>
+    
+        <div class="right-column">
+            <div class="progress-block">
+                <iframe scrolling="no" width="100%" height="200px" src="{{ url_for('progress') }}" frameborder="0"></iframe>
+            </div>
+            
+        </div>
+    
+    <!-- Popup Form for Adding Task -->
+    <div class="popup-form" id="taskForm">
+        <div class="form-container">
+            <form action="{{ url_for('manage_tasks') }}" method="POST">
+                <h2><i class="icon fas fa-pencil-alt"></i>       Add Task</h2>
+                
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <label for="description">Description:</label>
+                <input type="text" id="description" name="description" required>
+
+                <label for="date">Date:</label>
+                <input type="date" id="date" name="date" required>
+
+                <label for="priority">Priority:</label>
+                <select id="priority" name="priority" required>
+                    <option class="high" value="High">High</option>
+                    <option class="Medium" value="Medium">Medium</option>
+                    <option class="low" value="Low">Low</option>
+                </select>
+                <br>
+                <label for="type">Type:</label>
+                <br>
+                <select id="type" name="type" required>
+                    <option value="Programming">Programming</option>
+                    <option value="Fiction Writing">Fiction Writing</option>
+                    <option value="YouTubing/Freelancing">YouTubing/Freelancing</option>
+                    <option value="Sports">Sports</option>
+                    <option value="Academics">Academics</option>
+                    <option value="Tuition Classes">Tuition Classes</option>
+                    <option value="Language Learning">Language Learning</option>
+                    <option value="New Skill">New Skill</option>
+                    <option value="Other">Other</option>
+                </select>
+
+                <button type="submit" class="submit-btn">Add Task</button>
+                <button type="button" class="cancel-btn" onclick="closeForm()">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script>
+        function openForm() {
+            document.getElementById("taskForm").style.display = "block";
+        }
+
+        function closeForm() {
+            document.getElementById("taskForm").style.display = "none";
+        }
+
+        function confirmAndSubmit(taskId, taskDescription) {
+            if (confirm(`Is the task "${taskDescription}" done?`)) {
+                // Make an AJAX request to mark task as done and remove from list
+                fetch(`/mark_task_done/${taskId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({}),
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // Refresh the page or update task list
+                        location.reload();
+                    } else {
+                        alert('Failed to mark task as done.');
+                    }
+                })
+                .catch(error => console.error('Error marking task as done:', error));
+            } else {
+                // Uncheck the checkbox if user cancels
+                document.getElementById(`taskCheckbox-${taskId}`).checked = false;
+            }
+        }
+    </script>
+
+<p>{{ xp_count }}</p>
+</booty>
+</body>
+</html>

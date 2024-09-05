@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="static/css/styles.css">    
+        <link rel="stylesheet" href="/static/css/uni.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/all.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="icon" href="https://i.ibb.co/YBxkyWP/Chrono.png">
+        <title>Chrono</title>
+      </head>
+      <body class="body">
+      <div class="booty">
+        <nav class="navbar">
+          <div id="mySidenav" class="sidenav">
+              <a href="javascript:void(0)" class="closebtn" onclick="closeNav()" style="float: left;">&times;</a>
+              <div class="nbutton">
+                  <a href="{{ url_for('dashboard') }}"><i class="fas fa-tachometer-alt" style="color: rgba(0, 0, 0, 0.6);"></i>&nbsp; Dashboard</a>
+                  <a href="{{ url_for('manage_tasks') }}"><i class="icon fas fa-tasks" style="color: rgba(0, 182, 182, 0.603);"></i>&nbsp; Tasks</a>
+                  <a href="{{ url_for('clubs.list_clubs') }}"><i class="fas fa-users" style="color: rgba(179, 0, 0, 0.601);"></i>&nbsp; Club</a>
+                  <a href="{{ url_for('league_leaderboard' , league_name=current_user.league) }}"><i class="fas fa-trophy" style="color: rgb(255, 230, 4);"></i>&nbsp; Leaderboard</a>
+                  <a href="{{ url_for('resources') }}"><i class="fas fa-book" style="color: rgba(0, 0, 255, 0.607);"></i>&nbsp; Resources</a>
+                  <p style="font-weight: 300; color: rgb(107, 105, 105); position: fixed; left: 2%; bottom: 2%; ">Chrono v 0.13.5</p>
+              </div>
+          </div>  
+            
+            <div class="logo-container">
+              <span style="float: left; font-size:30px;cursor:pointer; padding: 4px;" onclick="openNav()">&#9776 </span>
+              <img src="https://i.ibb.co/YBxkyWP/Chrono.png" alt="Chrono Logo" style="float: left;"> <p style="color: black; float: left; font-weight: 550; margin-top: 15px;"> CHRON</p><p style="color: #8642f5;float: right; font-weight: 550; margin-top: 15px;">O</p>
+            </div>
+      
+            <script>
+            function openNav() {
+              document.getElementById("mySidenav").style.width = "18.301610541727672035139092240117%";
+              document.getElementById('overlay').style.display = 'block';
+            }
+            
+            function closeNav() {
+              document.getElementById("mySidenav").style.width = "0";
+              document.getElementById('overlay').style.display = 'none';
+            }
+            </script>
+      
+
+      </nav>
+      <div id="overlay"></div>
+        </div>
+        <section class="hero-section">
+          <div class="content">
+            <br>
+            <br>
+            <br>
+            <br>
+            <h1 style="background-image: linear-gradient(45deg, rgb(0, 26, 255), rgb(162, 0, 177), rgb(89, 0, 255)); background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);;">Elevate Your {Life}</h1>
+            <p>With Chrono you can literally do anything. This is primarily made for College students and it's by far the Everything You Need.</p>
+            <div class="buttons">
+              <a href="/register"><button class="btnhg">Get Started!</button></a>
+              <button class="btnhl">Learn More</button>
+            </div>
+            <br>
+            <br>
+            <br>
+            <br>
+            <div style="text-align: center;">
+            <i class="fas fa-angle-down" style="color: white; font-size: 36px;"></i>
+          </div>
+          </div>
+        </section>
+        <div id="feat">
+        <h1 style="text-align: center; background-color: #e6c9ff; margin-bottom: 0; border-bottom: 0; padding-top: 40px;">Features</h1>
+        <section class="features">
+          <div class="feature">
+            <i class="fas fa-tasks" style="float: left; font-size: 28px;"></i><h2>&nbsp;&nbsp;ITMS</h2>
+            <p>Users can create, manage, and track personal tasks. The tasks page allows users to add new tasks, mark them as completed, and view their progress. The progress bar feature rewards users with XP for completing tasks, promoting productivity and personal growth.</p>
+            <br>
+            <i class="fa fa-tachometer-alt" aria-hidden="true" style="float: left; font-size: 28px;"></i><h2>&nbsp;&nbsp;Personalized Dashboard</h2>
+            <p>Users can create, manage, and track personal tasks. The tasks page allows users to add new tasks, mark them as completed, and view their progress. The progress bar feature rewards users with XP for completing tasks, promoting productivity and personal growth.</p>
+            <br>
+          </div>
+          <div class="feature">
+            <i class="fas fa-medal" style="float: left; font-size: 28px;"></i><h2>&nbsp;&nbsp;Gamification</h2>
+            <p>Users can create, manage, and track personal tasks. The tasks page allows users to add new tasks, mark them as completed, and view their progress. The progress bar feature rewards users with XP for completing tasks, promoting productivity and personal growth.</p>
+            <br>
+            <i class="fa fa-robot" aria-hidden="true" style="float: left; font-size: 28px;"></i><h2>&nbsp;&nbsp;NeoGPT</h2>
+            <p>Created specifically for academic support, NeoGPT is an advanced AI chat assistant integrated into the platform modified by Nate. It's designed to help users with studies, tasks, and general queries, enhancing the interactive learning experience with instant, AI-driven assistance.</p>
+          </div>
+        </section>
+        </div>
+        <section class="objective" id="obj">
+          <div class="objective-r">
+          <h2 style="float: left;">Our Objective</h2>
+          <p style="float: left; text-align: justify;">The primary goal of Nate's platform is to revolutionize the student experience by offering a robust digital environment tailored for academic success. Through integrated study management tools, comprehensive academic support features, and engaging gamification elements, the platform empowers students to excel in their studies. By leveraging innovative technology, it aims to enhance learning outcomes, foster continuous improvement, and cultivate a dynamic educational journey that adapts to individual learning styles and goals.</p>
+          </div>
+          <div class="objective-l">
+            <img src="https://i.ibb.co/t4f1Pjx/3940817-2085405-removebg-preview.png" alt="objective" width="350px" style="float: right;">
+          </div>
+        </section>
+        <br>
+        <section class="about-site" id="about-site" style="padding-top: 50px;">
+          <div class="about-site-l">
+          <h2>About the Site</h2>
+          <p>Our platform, designed with a singular focus on 'Empowering Learning Through Innovation,' aims to revolutionize education by integrating cutting-edge technology with personalized learning experiences. By harnessing the power of AI, gamification, and interactive tools, we strive to empower students to explore, discover, and excel in their academic journeys. Through adaptive learning paths, real-time feedback mechanisms, and engaging content, we enable students to embrace their full potential and prepare for future challenges. Our commitment lies in fostering a dynamic educational environment where every learner can thrive, equipping them with the skills and knowledge to succeed in a rapidly evolving world.</p>
+          </div>
+          <div class="about-site-r">
+            <img src="https://i.ibb.co/Bwnr0mh/21742777-6514470-removebg-preview.png" alt="about-site">
+          </div>
+        </section>
+        <br>
+        <section class="about-developer" id="dev" style="padding-top: 50px;">
+          <div class="about-developer-r">
+          <h2>About the developer</h2>
+          <p> Nate Walker, the visionary developer behind this platform, brings a passion for innovation and a deep understanding of educational dynamics. With expertise in web development, AI integration, and a keen eye for user experience, Nate has crafted this platform to empower students through technology. Committed to creating transformative learning experiences, Nate combines technical prowess with a creative flair, ensuring that every aspect of the platform is designed to foster growth, engagement, and academic success.
+      
+            "From students to students"</p>
+          </div>
+            <div class="about-developer-l">
+              <img src="https://i.ibb.co/MSCH8TG/chrono11.png" alt="logo" width="400px">
+            </div>
+          </section>
+        <br>
+        <footer class="footer">
+          <div class="column">
+            <h3>Explore Again</h3>
+            <a href="#">Home</a>
+            <a href="#feat">Features</a>
+            <a href="#obj">Objective</a>
+            <a href="#about-site">About the Site</a>
+            <a href="#dev">About the Developer</a>
+            <a href="#">Donate</a>
+          </div>
+          <div class="column">
+            <h3>Manage</h3>
+            <a href="#">Dashboard</a>
+            <a href="#">My Profile</a>
+            <a href="#">Settings</a>
+            <a href="#">Privacy Policy</a>
+          </div>
+          <div class="column">
+            <h3>Support the Developer</h3>
+            <button class="dnt">Donate</button>
+            <button class="bmac">Buy me a Coffee</button>
+          </div>
+        </footer>
+        <div class="copyright">
+          <p>Developed Solely by <span style="font-weight: 550; color: lightgreen;">Nate Walker</span> aka <span style="font-weight: 550; color: lightgreen;">Chathurka Uddheepana</span></p>
+          <p>Powered By <span style="font-weight: 550; color: lightgreen;">N8 Digital</span> © 2024 <span style="font-weight: 550; color: rgb(255, 251, 0);">CHRONO</span></p>
+        </div>
+      
+      </body></html>

@@ -1,0 +1,38 @@
+.booty {
+    padding: 3% 20%;
+}
+
+table{
+    border-radius: 7px;
+    width: 100%;
+    padding: 20px;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgba(131, 75, 2, 0); /* Removes the borders */
+    border-collapse: collapse; /* Ensures there is no space between table cells */
+}
+
+table , td  {
+    padding: 10px 20px;
+    background-color: rgb(255, 255, 255);
+    border: none; /* Removes the borders */
+    border-collapse: collapse; /* Ensures there is no space between table cells */
+    font-weight: 550;
+}
+
+/* Change the font color of the first row */
+.first-row td {
+    color: rgb(255, 187, 0);
+    background-color: rgba(255, 217, 0, 0.151);
+}
+
+/* Change the font color of the second row */
+.second-row td {
+    color: rgb(104, 104, 104);
+    background-color: rgba(83, 83, 83, 0.151);
+}
+
+/* Change the font color of the third row */
+.third-row td {
+    color: rgba(131, 75, 2);
+    background-color: rgba(131, 75, 2, 0.151);
+}

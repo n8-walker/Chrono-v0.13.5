@@ -1,0 +1,68 @@
+        <nav class="navbar">
+            <div id="mySidenav" class="sidenav">
+                <a href="javascript:void(0)" class="closebtn" onclick="closeNav()" style="float: left;">&times;</a>
+                <div class="nbutton">
+                    <a href="{{ url_for('dashboard') }}"><i class="fas fa-tachometer-alt" style="color: rgba(0, 0, 0, 0.6);"></i>&nbsp; Dashboard</a>
+                    <a href="{{ url_for('manage_tasks') }}"><i class="icon fas fa-tasks" style="color: rgba(0, 182, 182, 0.603);"></i>&nbsp; Tasks</a>
+                    <a href="{{ url_for('clubs.list_clubs') }}"><i class="fas fa-users" style="color: rgba(179, 0, 0, 0.601);"></i>&nbsp; Club</a>
+                    <a href="{{ url_for('league_leaderboard' , league_name=current_user.league) }}"><i class="fas fa-trophy" style="color: rgb(255, 230, 4);"></i>&nbsp; Leaderboard</a>
+                    <a href="{{ url_for('resources') }}"><i class="fas fa-book" style="color: rgba(0, 0, 255, 0.607);"></i>&nbsp; Resources</a>
+                    <p style="font-weight: 300; color: rgb(107, 105, 105); position: fixed; left: 2%; bottom: 2%; ">Chrono v 0.13.5</p>
+                </div>
+            </div>  
+              
+              <div class="logo-container">
+                <span style="float: left; font-size:30px;cursor:pointer; padding: 4px;" onclick="openNav()">&#9776 </span>
+                <img src="https://i.ibb.co/YBxkyWP/Chrono.png" alt="Chrono Logo" style="float: left;"> <p style="color: black; float: left; font-weight: 550; margin-top: 15px;"> CHRON</p><p style="color: #8642f5;float: right; font-weight: 550; margin-top: 15px;">O</p>
+              </div>
+        
+              <script>
+              function openNav() {
+                document.getElementById("mySidenav").style.width = "18.301610541727672035139092240117%";
+                document.getElementById('overlay').style.display = 'block';
+              }
+              
+              function closeNav() {
+                document.getElementById("mySidenav").style.width = "0";
+                document.getElementById('overlay').style.display = 'none';
+              }
+              </script>
+        
+            <div class="profile">
+                <form class="searchu" action="{{ url_for('search.search_users') }}" method="GET">
+                    <input class="findfriends" type="text" name="query" placeholder="Find Your Friends...">
+                    <button class="findfrbtn" type="submit">Search</button>
+                </form>
+               <div class="click"> 
+        <img src="{{ url_for('static', filename='uploads/' + current_user.profile_image) }}" alt="Profile Picture" class="profile-pic">
+        <span class="profile-name">{{current_user.display_name or current_user.username}}</span>
+        <div class="dropdown-menu">
+            <img src="{{ url_for('static', filename='uploads/' + current_user.profile_image) }}" alt="Profile Picture" class="profile-p">
+            <h1 class="profile-n">{{ current_user.display_name or current_user.username }}</h1>
+            <p class="profile-n">Level {{ current_user.level }}</p>
+            <a href="{{ url_for('dashboard') }}" style="float: left;"><i class="icon fas fa-home"></i> Dashboard</a>
+            <a href="{{ url_for('profile', username=current_user.username) }}" style="float: left;"><i class="icon fas fa-user"></i> Profile</a>
+            <a href="{{ url_for('settings') }}" style="float: left;"><i class="icon fas fa-cog"></i> Settings</a>
+            <a href="#" style="float: left;"><i class="fas fa-lock"></i>&nbsp;Privacy Policy</a>
+            <a href="{{ url_for('logout') }}" style="float: left;"><i class="icon fas fa-sign-out-alt"></i> Logout</a>
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    var profile = document.querySelector('.click');
+                    var dropdown = document.querySelector('.dropdown-menu');
+                
+                    profile.addEventListener('click', function() {
+                        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+                    });
+                
+                    // Close the dropdown if clicked outside
+                    window.addEventListener('click', function(event) {
+                        if (!profile.contains(event.target)) {
+                            dropdown.style.display = 'none';
+                        }
+                    });
+                });
+                </script>
+        </div>
+            </div>
+        </div>
+        </nav>

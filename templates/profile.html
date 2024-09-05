@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ user.display_name or user.username }}'s Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/uni.css')}}">    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="icon" href="https://i.ibb.co/YBxkyWP/Chrono.png">
+</head>
+<body>
+    <div id="mobile-block-message" class="block-message">
+        <p>Sorry, to open this page go to a Computer.</p>
+      </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+  function checkScreenWidth() {
+    var mainContent = document.getElementById('main-content');
+    var blockMessage = document.getElementById('mobile-block-message');
+    if (window.innerWidth < 768) { // You can set the width threshold as needed
+      mainContent.style.display = 'none';
+      blockMessage.style.display = 'block';
+    } else {
+      mainContent.style.display = 'block';
+      blockMessage.style.display = 'none';
+    }
+  }
+
+  // Check on initial load
+  checkScreenWidth();
+
+  // Check on window resize
+  window.addEventListener('resize', checkScreenWidth);
+});
+
+    </script>
+    <div class="booty">
+        <nav class="navbar">
+            <div id="mySidenav" class="sidenav">
+                <a href="javascript:void(0)" class="closebtn" onclick="closeNav()" style="float: left;">&times;</a>
+                <div class="nbutton">
+                    <a href="{{ url_for('dashboard') }}"><i class="fas fa-tachometer-alt" style="color: rgba(0, 0, 0, 0.6);"></i>&nbsp; Dashboard</a>
+                    <a href="{{ url_for('manage_tasks') }}"><i class="icon fas fa-tasks" style="color: rgba(0, 182, 182, 0.603);"></i>&nbsp; Tasks</a>
+                    <a href="{{ url_for('clubs.list_clubs') }}"><i class="fas fa-users" style="color: rgba(179, 0, 0, 0.601);"></i>&nbsp; Club</a>
+                    <a href="{{ url_for('league_leaderboard' , league_name=current_user.league) }}"><i class="fas fa-trophy" style="color: rgb(255, 230, 4);"></i>&nbsp; Leaderboard</a>
+                    <a href="{{ url_for('resources') }}"><i class="fas fa-book" style="color: rgba(0, 0, 255, 0.607);"></i>&nbsp; Resources</a>
+                    <p style="font-weight: 300; color: rgb(107, 105, 105); position: fixed; left: 2%; bottom: 2%; ">Chrono v 0.13.5</p>
+                </div>
+            </div>  
+              
+              <div class="logo-container">
+                <span style="float: left; font-size:30px;cursor:pointer; padding: 4px;" onclick="openNav()">&#9776 </span>
+                <img src="https://i.ibb.co/YBxkyWP/Chrono.png" alt="Chrono Logo" style="float: left;"> <p style="color: black; float: left; font-weight: 550; margin-top: 15px;"> CHRON</p><p style="color: #8642f5;float: right; font-weight: 550; margin-top: 15px;">O</p>
+              </div>
+        
+              <script>
+              function openNav() {
+                document.getElementById("mySidenav").style.width = "18.301610541727672035139092240117%";
+                document.getElementById('overlay').style.display = 'block';
+              }
+              
+              function closeNav() {
+                document.getElementById("mySidenav").style.width = "0";
+                document.getElementById('overlay').style.display = 'none';
+              }
+              </script>
+        
+            <div class="profile">
+                <form class="searchu" action="{{ url_for('search.search_users') }}" method="GET">
+                    <input class="findfriends" type="text" name="query" placeholder="Find Your Friends...">
+                    <button class="findfrbtn" type="submit">Search</button>
+                </form>
+               <div class="click"> 
+        <img src="{{ url_for('static', filename='uploads/' + current_user.profile_image) }}" alt="Profile Picture" class="profile-pic">
+        <span class="profile-name">{{current_user.display_name or current_user.username}}</span>
+        <div class="dropdown-menu">
+            <img src="{{ url_for('static', filename='uploads/' + current_user.profile_image) }}" alt="Profile Picture" class="profile-p">
+            <h1 class="profile-n">{{ current_user.display_name or current_user.username }}</h1>
+            <p class="profile-n">Level {{ current_user.level }}</p>
+            <a href="{{ url_for('dashboard') }}" style="float: left;"><i class="icon fas fa-home"></i> Dashboard</a>
+            <a href="{{ url_for('profile', username=current_user.username) }}" style="float: left;"><i class="icon fas fa-user"></i> Profile</a>
+            <a href="{{ url_for('settings') }}" style="float: left;"><i class="icon fas fa-cog"></i> Settings</a>
+            <a href="#" style="float: left;"><i class="fas fa-lock"></i>&nbsp;Privacy Policy</a>
+            <a href="{{ url_for('logout') }}" style="float: left;"><i class="icon fas fa-sign-out-alt"></i> Logout</a>
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    var profile = document.querySelector('.click');
+                    var dropdown = document.querySelector('.dropdown-menu');
+                
+                    profile.addEventListener('click', function() {
+                        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+                    });
+                
+                    // Close the dropdown if clicked outside
+                    window.addEventListener('click', function(event) {
+                        if (!profile.contains(event.target)) {
+                            dropdown.style.display = 'none';
+                        }
+                    });
+                });
+                </script>
+        </div>
+            </div>
+        </div>
+        </nav>
+    {% block content %}
+    <div class="banner">
+    
+        <div class="dp">
+            <img src="{{ url_for('static', filename='uploads/' + profile_image) }}">
+            <div>
+                {% if user.account_type == "Ultimate" %}
+                <h5 class="display_name">{{ user.display_name }} <i class="fa fa-check-circle" style="color: rgb(0, 255, 136);"></i></h5>    
+                {% elif user.account_type == "Pro" %}
+                <h5 class="display_name">{{ user.display_name }} <i class="fa fa-check-circle" style="color: rgb(0, 238, 255);"></i></h5>    
+                {% else %}
+                <h5 class="display_name">{{ user.display_name }}</h5>    
+                {% endif %}
+            <h6 class="username">@ {{ user.username }}</h6>      
+            <p class="levelcount">&nbsp;<i class="icon fas fa-gamepad"></i>&nbsp;Level {{ user.level }} </p>      </div>
+            <div style="display: none;">{{ csrf_token() }}</div>
+            <button id="followButton" class="followbtn">
+                {% if user.id == current_user.id %}
+                    <a href="{{ url_for('settings') }}" style="color: white; text-decoration: none;">Edit Your Profile</a>
+                {% else %}
+                    {% if is_following %}
+                        Unfollow
+                    {% else %}
+                        Follow
+                    {% endif %}
+                {% endif %}
+            </button>
+            <script>
+                fetch('{{ url_for("follow_user", user_id=user.id) }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ some_data: 'some_value' })
+                });
+                </script>
+                
+        </div>
+    </div>
+        <ul>
+            <li><center><iframe class="listfollowers" src="{{ url_for('followers', user_id=user.id) }}" scrolling="no" frameborder="0"></iframe></center></li>
+        </ul>
+    <div class="cards">
+        <div class="levelprg">
+            <h2>Game Progress: <h2 style="font-family: 'Courier New', Courier, monospace;">Level {{ level }}</h2></h2>
+            <progress max="100" value="{{ xp_percent }}"></progress><br><br>
+            <p><b>{{ xp_earned }} XP </b>earned out of <b>{{ level_xp }} XP</b></p>
+        </div>
+        <div class="type">
+            {% if user.account_type == "Pro" %}
+            <div class="pro">
+            <h3><i class="fas fa-star"></i> {{ user.username }} is a Pro Member!!!</h3>
+            <p>@{{ user.username }} is a kind-hearted contributer to the site.</p></div>
+            {% elif user.account_type == "Ultimate" %}
+            <div class="ultimate">
+            <h3><i class="fas fa-star"></i> {{ user.username }} is an Ultimate user</h3>
+            <p>@{{ user.username }} is a genius that created the Chrono or gave support!</p></div> 
+            {% elif user.account_type == "GOD" %}
+            <div class="GOD">
+            <h3><i class="fas fa-star"></i> {{ user.username }} is the GOD of Chrono</h3>
+            <p>Chathurka (aka. @_walkr) is the mad scientist that created Chrono!</p></div> 
+            {% else %}
+            <div class="free">
+            <h3><i class="fas fa-circle"></i> {{ user.username }} is a free user</h3>
+            <p>@{{ user.username }} is a genius member that uses chrono!</p></div>
+            {% endif %}       
+        </div>
+        <div class="bio">
+            <h2>Badges</h2>
+            {% if user.yt_badge %}
+                <img style="text-align: center;" src="https://www.pngkey.com/png/detail/908-9085514_made-a-custom-youtube-button-with-pewds-logo.png" width="50px"><br>
+                I am a YouTuber
+            {% endif %}
+        </div>
+        <div class="des">
+            <h2>Bio</h2>
+            {{ user.bio }}
+        </div>
+        <div class="social-media">
+            <h2>Social Media</h2>
+            <div class="socm">
+            <div class="social-cell">
+                {% if not user.youtube == "N/A" %}
+                <i style="color: red;" class="fab fa-youtube fa-5x"></i>
+                <h3>YouTube</h3>
+                <button onclick="window.location.href='https://youtube.com/@{{ user.youtube }}'">Visit</button>
+                {% elif user.youtube == "N/A" %}
+                <i style="color: rgb(116, 116, 116);" class="fab fa-youtube fa-5x"></i>
+                <h3>YouTube</h3>
+                <p>Not available</p>
+                {% endif %}
+            </div>
+            <div class="social-cell">
+                {% if not user.facebook == "N/A" %}
+                <i style="color: blue;" class="fab fa-facebook fa-5x"></i>
+                <h3>FaceBook</h3>
+                <button onclick="window.location.href='https://facebook.com/{{ user.facebook }}'">Visit</button>
+                {% elif  user.facebook == "N/A" %}
+                <i style="color: rgb(116, 116, 116);" class="fab fa-facebook fa-5x"></i>
+                <h3>FaceBook</h3>
+                <p>Not available</p>
+                {% endif %}
+            </div>
+            <div class="social-cell">
+                {% if not user.twitter == "N/A" %}
+                <i style="color: rgb(0, 140, 255);" class="fab fa-twitter fa-5x"></i>
+                <h3>Twitter</h3>
+                <button onclick="window.location.href='https://twitter.com/{{ user.twitter }}'">Visit</button>
+                {% elif  user.twitter == "N/A" %}
+                <i style="color: rgb(116, 116, 116);" class="fab fa-twitter fa-5x"></i>
+                <h3>Twitter</h3>
+                <p>Not available</p>
+                {% endif %}
+            </div>
+            <div class="social-cell">
+                {% if not user.insta == "N/A" %}
+                <i style="color: purple;" class="fab fa-instagram fa-5x"></i>
+                <h3>Instagram</h3>
+                <button onclick="window.location.href='https://instagram.com/{{ user.insta }}'">Visit</button>
+                {% elif  user.insta == "N/A" %}
+                <i style="color: rgb(116, 116, 116);" class="fab fa-instagram fa-5x"></i>
+                <h3>Instagram</h3>
+                <p>Not available</p>
+                {% endif %}
+            </div>
+            <div class="social-cell">
+                {% if not user.tiktok == "N/A" %}
+                <i class="fab fa-tiktok fa-5x"></i>
+                <h3>TikTok</h3>
+                <button onclick="window.location.href='https://tiktok.com/@{{ user.tiktok }}'">Visit</button>
+                {% elif  user.tiktok == "N/A" %}
+                <i style="color: rgb(116, 116, 116);" class="fab fa-tiktok fa-5x"></i>
+                <h3>TikTok</h3>
+                <p>Not available</p>
+                {% endif %}
+            </div>
+        </div>
+        </div><br><br><br><br><br>
+    </div>
+
+    <script>
+        document.getElementById('followButton').addEventListener('click', function() {
+            fetch('{{ url_for("follow_user", user_id=user.id) }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ action: this.textContent.trim() === 'Follow' ? 'follow' : 'unfollow' })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    this.textContent = data.action === 'follow' ? 'Unfollow' : 'Follow';
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+        </script>
+    {% endblock %}
+</div>
+</body>
+</html>

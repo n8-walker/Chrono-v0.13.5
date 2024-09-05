@@ -1,0 +1,108 @@
+.booty {
+    padding: 0% 10%;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.content {
+    padding: 5% 25%;
+}
+
+.flwr {
+    width: 100%;
+    text-decoration: none;
+    color: black;
+    font-weight: 525;
+    padding: 30px 25px;
+    background-color: #d9dcdf;
+    border-radius: 7px;
+    height: 30px;
+    border-bottom: none;
+}
+
+.flwr h4{
+  position: relative;
+  top: -12.5px;
+}
+
+.flwrbtn{
+  float: right;
+  position: relative;
+  top: -60px;
+  text-decoration: none;
+  padding: 10px 20px;
+  background-color: #8642f5;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-family: 'Montserrat',sans-serif;
+}
+
+.flwrbtn:hover{
+  background-color: #6c34c4;
+}
+
+.flwr:hover{
+    background-color: #bdbaba;
+}
+
+li {
+    list-style-type: none;
+    background-color: aqua;
+    height: 30px;
+}
+
+.findfriends1{
+    border-width: 0;
+    border-radius: 10px;
+    box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.5);
+    padding: 10px; 
+    width: 75%;
+    font-family: 'Montserrat', sans-serif;
+  }
+  .findfrbtn1{
+    padding: 10px;
+    background-color: blueviolet;
+    color: white;
+    border-width: 0;
+    border-radius: 10px;
+    box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.5);
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  .csearch {
+    position: absolute;
+    top: 15%;
+    right: 10%;
+  }
+
+  .cshold {
+    padding: 10px;
+    font-family: 'Montserrat', sans-serif;
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 4px 9px rgba(0, 0, 0, 0.1);
+  }
+
+  .csbutton {
+    padding: 10px;
+    background-color: cadetblue;
+    font-family: 'Montserrat', sans-serif;
+    border-radius: 12px;
+    font-weight: 500;
+    color: white;
+    border: none;
+    box-shadow: 0 4px 9px rgba(0, 0, 0, 0.1);
+  }
+
+  .acbtn {
+    text-decoration: none;
+    padding: 10px 20px;
+    background-color: #8642f5;
+    border: none;
+    border-radius: 5px;
+    color: white;
+  }
+
+  .acbtn:hover {
+    background-color: #6c34c4;
+  }

@@ -1,0 +1,62 @@
+.content {
+    position: absolute;
+    background-color: rgb(241, 239, 239);
+    border-width: 0;
+    margin: 0;
+    width: 70%;
+    padding-bottom: 80px;
+    padding: 0 15%;
+}
+
+.label{
+    padding: 40px;
+    font-size: large;
+}
+
+.field{
+    float: left;
+    position: absolute;
+    right: 25%;
+    width: 500px;
+    padding: 10px;
+    border-color: rgb(183, 183, 183);
+    border-radius: 7px;
+    border-width: 3px;
+    font-family: 'Montserrat', sans-serif;
+    border: none;
+}
+
+.data{
+    padding: 25px;
+}
+
+.fbtn {
+    position: absolute;
+    right: 5%;
+    padding: 20px;
+    border-width: 0;
+    font-family: 'Montserrat', sans-serif;
+    background-color: blueviolet;
+    color: white;
+    border-radius: 10px;
+    border-width: 0;
+    box-shadow: 0px 0px 7px 0px rgba(0,0,0, 0.2);
+}
+
+.subtn {
+    padding: 15px;
+    border-radius: 10px;
+    border-width: 0;
+    box-shadow: 0px 0px 7px 0px rgba(0,0,0, 0.2);
+    position: absolute;
+    left: 45%;
+    background-color: blueviolet;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.imgreq {
+    position: absolute;
+    top: 150px;
+    width: 100%;
+}

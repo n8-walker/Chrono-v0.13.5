@@ -1,0 +1,49 @@
+.times1 {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    padding: 0 0 0 0;
+}
+
+.booty {
+    background-color: black;
+}
+
+.times2 {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    padding: 50px 0 0 0;
+}
+
+.t1, .t2, .t3, .t4, .t5 {
+    padding: 50px;
+    background-color: rgb(24, 24, 24);
+    width: 250px;
+    border-radius: 7px;
+    box-shadow: 1px 1px 4px 1px rgba(255, 255, 255, 0.377);
+    color: whitesmoke;
+}
+
+.booty h1{
+    padding: 15px 100px;
+    color: whitesmoke;
+}
+
+.buttong {
+    float: right;
+    border: 0;
+    border-radius: 7px;
+    background-color: aquamarine;
+    font-family: 'Montserrat', sans-serif;
+    padding: 10px 20px;
+}
+
+.buttong:hover {
+    
+    background-color: rgba(127, 255, 212, 0.76);
+}
+
+h2 {
+    font-family: 'Orbitron',sans-serif;
+}

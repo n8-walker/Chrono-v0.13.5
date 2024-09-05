@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>YouTube Quiz</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: "Exo 2", sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        #quiz-container {
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+            float: center;
+        }
+        .question {
+            margin-bottom: 20px;
+            font-weight: 550;
+            padding: 10px;
+            vertical-align: middle;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            padding:10px; 
+            width: 200px;
+            height:100px;
+            background-color: #9828a7;
+            text-align: center;
+            color: white;
+            font-weight: 500;
+            border-radius: 7px;
+            float: left;
+            margin: 10px;
+            box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, 0.344);
+            font-size: large;
+        }
+        button {
+            display: inline-block;
+            padding: 15px 40px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            position: absolute;
+            top: 80%;
+            right: 45%;
+            border-radius: 7px;
+            font-family: "Exo 2", sans-serif;
+            box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, 0.344);
+        }
+        #result-container {
+            text-align: center;
+            margin-top: 20px;
+            padding: 250px 0px;
+            font-size: xx-large;
+        }
+        #timer {
+            margin-top: 20px;
+            position: absolute;
+            top: 1%;
+            right: 5%;
+            padding: 10px 20px;
+            background-image: linear-gradient( 45deg, red, orange);
+            color: white;
+            border-radius: 7px;
+            width: 100px;
+            box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, 0.344);
+        }
+        .lgbtq {
+            position: absolute;
+            top: 45%;
+            left: 15%;
+        }
+    </style>
+</head>
+<body>
+    <div id="quiz-container">
+        <div id="question-container"></div>
+        <div id="timer"><span id="time">30</span> Seconds</div>
+        <button id="next-button" style="display:none;"><h2>Next</h2></button>
+    </div>
+    <div id="result-container" style="display:none;">
+        <p id="result"></p>
+        <a href="/profile/{{ current_user.username }}"><button>Continue</button></a>
+    </div>
+    <script>
+        // Adding CSRF token to JavaScript
+        const csrfToken = '{{ csrf_token() }}';
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let timer;
+        let timeLeft = 30;
+        let currentQuestionId = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadNextQuestion();
+
+            document.getElementById('next-button').addEventListener('click', () => {
+                if (currentQuestionIndex < 40) {
+                    saveAnswer();
+                    loadNextQuestion();
+                } else {
+                    submitQuiz();
+                }
+            });
+            document.addEventListener('visibilitychange', handleVisibilityChange);
+        });
+
+        function loadNextQuestion() {
+            fetch('/next_question')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        console.error(data.error);
+                        submitQuiz(); // Ensure we end the quiz if there's an error
+                        return;
+                    }
+                    displayQuestion(data);
+                    startTimer();
+                })
+                .catch(error => {
+                    console.error('Error loading next question:', error);
+                    submitQuiz(); // Ensure we end the quiz if there's an error
+                });
+        }
+
+        function displayQuestion(question) {
+            currentQuestionId = question.id;
+            document.getElementById('question-container').innerHTML = `
+                <div class="question">
+                    <h1 style="padding-top:100px;">${question.question}</h1>
+                    <div class="lgbtq">
+                    ${question.options.map(option => `                    
+                        <label>
+                            <input type="radio" name="q${question.id}" value="${option}">
+                            ${option}
+                        </label>
+                    `).join('')}
+                    </div>
+                </div>
+            `;
+            document.getElementById('next-button').style.display = 'block';
+        }
+
+        function startTimer() {
+            timeLeft = 30;
+            document.getElementById('time').textContent = timeLeft;
+            clearInterval(timer);
+            timer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('time').textContent = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    document.getElementById('next-button').click();
+                }
+            }, 1000);
+        }
+
+        function saveAnswer() {
+            const selectedOption = document.querySelector('input[type="radio"]:checked');
+            userAnswers.push({
+                id: currentQuestionId,
+                selected: selectedOption ? selectedOption.value : null
+            });
+        }
+
+        function submitQuiz(intentional = true) {
+    clearInterval(timer);
+    fetch('/submit_quiz', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'  // Ensure CSRF token is included if needed
+        },
+        body: JSON.stringify({ questions: userAnswers, intentional: intentional })
+    })
+    .then(response => {
+        if (!response.ok) {
+            console.error('HTTP error:', response.status);
+            return response.json().then(err => {
+                throw new Error(err.error || 'Unknown error');
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Submit response:', data);  // Log response data
+        if (data.passed) {
+            document.getElementById('result').textContent = 'Congratulations! You passed the quiz and you have earned the Viral King Badge and 100 XP';
+        } else {
+            document.getElementById('result').textContent = 'You did not pass the quiz.';
+        }
+        document.getElementById('quiz-container').style.display = 'none';
+        document.getElementById('result-container').style.display = 'block';
+    })
+    .catch(error => {
+        console.error('Error submitting quiz:', error);
+        document.getElementById('result').textContent = 'An error occurred while submitting the quiz.';
+        document.getElementById('quiz-container').style.display = 'none';
+        document.getElementById('result-container').style.display = 'block';
+    });
+}
+function handleVisibilityChange() {
+    if (document.hidden) {
+        submitQuiz(false);
+    }
+}
+
+    </script>
+</body>
+</html>
