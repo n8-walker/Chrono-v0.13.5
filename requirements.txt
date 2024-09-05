@@ -7,4 +7,4 @@ Flask-WTF
 Werkzeug
 WTForms
 requests
-markupsafe==2.0.1
+markupsafe==2.1.1
