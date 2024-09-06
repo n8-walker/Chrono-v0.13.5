@@ -1007,5 +1007,5 @@ def timer10800():
     return render_template('/study/t5.html')
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 8080))
-    app.run(host='0.0.0.0', port=port)
+    port = int(os.environ.get('PORT', 8080))  # Get PORT from environment or use 8080 as default
+    app.run(host='0.0.0.0', port=port)        # Run the app on all available interfaces and the specified port
