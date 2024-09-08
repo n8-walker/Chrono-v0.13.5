@@ -15,6 +15,9 @@ import os
 import random
 import uuid
 from sqlalchemy.exc import IntegrityError, PendingRollbackError
+import secrets
+import pytz
+import time
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key_here'  # Replace with your own secret key
@@ -94,29 +97,6 @@ def upload():
             abort(400)  # Invalid file type
     return render_template('dp.html', form=form, )
 
-# Route for uploading banner image
-@app.route('/upload_banner', methods=['GET', 'POST'])
-@login_required
-def upload_banner():
-    form = BannerForm()
-    if form.validate_on_submit():
-        filename = secure_filename(form.banner.data.filename)
-        upload_folder = app.config['UPLOADED_BANNERS_DEST']
-        
-        # Ensure the upload directory exists
-        if not os.path.exists(upload_folder):
-            os.makedirs(upload_folder)
-        
-        filepath = os.path.join(upload_folder, filename)
-        form.banner.data.save(filepath)
-        
-        current_user.banner_image = filename
-        db.session.commit()
-        
-        flash('Banner image uploaded successfully', 'success')
-        return redirect(url_for('profile'))
-    return render_template('upload_banner.html', form=form)
-
 search_bp = Blueprint('search', __name__, url_prefix='/search')
 
 class Follow(db.Model):
@@ -181,12 +161,6 @@ class Club(db.Model):
     creator = db.relationship('User', foreign_keys=[creator_id])
     other_user = db.relationship('User', foreign_keys=[other_user_id])
 
-class UserClub(db.Model):
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)  # ID of the user
-    club_id = db.Column(db.Integer, db.ForeignKey('club.id'), primary_key=True)  # ID of the club
-    joined_at = db.Column(db.DateTime, default=datetime.utcnow)  # When the user joined the club
-    role = db.Column(db.String(50), default='member')  # User role in the club (e.g., member, admin)
-
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     question = db.Column(db.String(200), nullable=False)
@@ -211,6 +185,35 @@ class ClubEvents(db.Model):
     date = db.Column(db.Text, nullable=False)
 
     club = db.relationship('Club', foreign_keys=[club_id])
+
+class UserMessages(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    reciever_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    conversation_id = db.Column(db.Integer, db.ForeignKey('conversations.id'), nullable=False)
+    message = db.Column(db.Text, nullable=False)
+    date = db.Column(db.Date, nullable=False)   # Using Date type for storing dates
+    time = db.Column(db.Time, nullable=False)   # Using Time type for storing time
+    timestamp = db.Column(db.String, nullable=False)  # Use String for ISO 8601 format
+
+
+    # Relationship with User table to refer to the sender
+    sender = db.relationship('User', foreign_keys=[sender_id])
+    reciever = db.relationship('User', foreign_keys=[reciever_id])
+    
+    # Relationship with Conversations table
+    conversation = db.relationship('Conversations', foreign_keys=[conversation_id])
+
+
+class Conversations(db.Model):
+    id = db.Column(db.String(150), primary_key=True)
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    # Define relationships for sender and receiver
+    sender = db.relationship('User', foreign_keys=[sender_id])
+    receiver = db.relationship('User', foreign_keys=[receiver_id])
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -1249,6 +1252,94 @@ def timer7200():
 @login_required
 def timer10800():
     return render_template('/study/t5.html')
+
+def convo_id(length=75):
+    return secrets.token_hex(length // 2)    
+
+@app.route('/converse/<int:user_id>')
+@login_required
+def converse(user_id):
+    sender = current_user.id
+    reciever = user_id
+
+    did_converse = Conversations.query.filter(
+        ((Conversations.sender_id == sender) & (Conversations.receiver_id == reciever)) |
+        ((Conversations.sender_id == reciever) & (Conversations.receiver_id == sender))).first()
+    
+    conversed_id = convo_id()
+
+    if did_converse is None:
+        converse = Conversations(id=conversed_id ,sender_id=sender, receiver_id=reciever)
+        db.session.add(converse)
+        db.session.commit()
+
+        converse_id = converse.id
+    else:
+        converse_id = did_converse.id 
+
+    return redirect(url_for('chat', converse_id=converse_id))
+
+@app.route('/send_msg/<converse_id>', methods=['POST'])
+@login_required
+def send_msg(converse_id):
+    converse = Conversations.query.get_or_404(converse_id)
+    utc_time = datetime.now(pytz.utc)
+    if request.method == 'POST':   
+        sender_id = current_user.id   
+        reciever_id = converse.receiver_id
+        converse_id = converse_id
+        content = request.form['msg']
+        date = utc_time.date()
+        time = utc_time.time()
+        timestamp = datetime.now(pytz.utc).isoformat()  # ISO 8601 format
+        message = UserMessages(sender_id=sender_id, reciever_id=reciever_id, conversation_id=converse_id, message=content, date=date, time=time, timestamp=timestamp)
+        db.session.add(message)
+        db.session.commit()
+    return redirect(url_for('chat', converse_id=converse_id))
+
+@app.route('/convo/<converse_id>', methods=['GET'])
+@login_required
+def chat(converse_id):
+    converse = Conversations.query.get_or_404(converse_id)
+    convos1 = Conversations.query.filter_by(sender_id = current_user.id).all()
+    convos2 = Conversations.query.filter_by(receiver_id = current_user.id).all()
+    convos = convos1 + convos2
+
+    # Order messages by date and time
+    converted = UserMessages.query.filter_by(conversation_id=converse.id).order_by(UserMessages.date, UserMessages.time).all()
+    return render_template('chat.html', converse=converse, converted=converted, convos=convos)
+
+@app.route('/get_messages/<converse_id>', methods=['GET'])
+@login_required
+def get_messages(converse_id):
+    last_message_time = request.args.get('last_message_time', '', type=str)
+
+    timeout = 60  # Time in seconds to wait for new messages
+    start_time = time.time()
+
+    while time.time() - start_time < timeout:
+        query = UserMessages.query.filter(
+            UserMessages.conversation_id == converse_id
+        )
+        if last_message_time:
+            query = query.filter(UserMessages.timestamp > last_message_time)
+
+        new_messages = query.all()
+
+        if new_messages:
+            messages = [{
+                'sender_id': msg.sender_id,
+                'message': msg.message,
+                'timestamp': msg.timestamp
+            } for msg in new_messages]
+
+            last_message_time = new_messages[-1].timestamp  # Update to the last message timestamp
+            return jsonify(messages)
+
+        time.sleep(1)  # Sleep briefly before checking again
+
+    return jsonify([])
+
 
 if __name__ == '__main__':
     with app.app_context():

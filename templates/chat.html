@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/uni.css')}}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Electrolize&display=swap" rel="stylesheet">
+    <link rel="icon" href="https://i.ibb.co/YBxkyWP/Chrono.png">
+    <title>Conversation</title>
+</head>
+<body>
+<div class="booty">
+    <div class="convos">
+        <h2>Chats</h2>
+        <ul>
+        {% for chat in convos[::-1] %}
+        <a href="/converse/{{chat.sender.id}}"><li><img style="vertical-align: middle;" src="/static/uploads/{{chat.sender.profile_image}}" width="50px" height="50px"><h4>{{ chat.sender.display_name }}</h4><br>
+        <p>@{{ chat.sender.username }}</p></li></a>
+        {% endfor %}
+        </ul>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<div class="msgpane">
+    <div class="details">
+    <h3>
+        {% if converse.receiver.id == current_user.id %}
+        <img style="vertical-align: middle;" src="/static/uploads/{{converse.sender.profile_image}}" width="50px" height="50px"> {{ converse.sender.display_name }}</h3><br>
+        <p>{{ converse.sender.bio.split('.')[0] or converse.sender.bio.split(' ')[0] }}</p>
+        {% else %}
+        <img style="vertical-align: middle;" src="/static/uploads/{{converse.receiver.profile_image}}" width="50px" height="50px"> {{ converse.receiver.display_name }}</h3><br>
+        <p>{{ converse.receiver.bio.split('.')[0] or converse.receiver.bio.split(' ')[0] }}</p>
+        {% endif %}
+    </div>
+    <br><br><br><br><br>
+    <div id="chat-box"></div>
+    <br><br><br><br><br>
+    
+    <form class="tbox" id="send-message-form">
+        <textarea id="msg" placeholder="Type your message here" rows="1"></textarea>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="submit" class="send" value="-->">
+    </form>
+    
+    <script>
+        $(document).ready(function() {
+            var lastMessageTime = '';  // Initialize as an empty string
+    
+            $('#send-message-form').submit(function(e) {
+                e.preventDefault();  // Prevent the form from refreshing the page
+    
+                var message = $('#msg').val();
+                var csrfToken = $('input[name="csrf_token"]').val();
+    
+                if (message) {
+                    $.ajax({
+                        url: '/send_msg/{{ converse.id }}',
+                        method: 'POST',
+                        data: {
+                            msg: message,
+                            csrf_token: csrfToken
+                        },
+                        success: function() {
+                            $('#msg').val('');  // Clear the textarea
+                            // No need to reload messages here
+                        }
+                    });
+                }
+            });
+
+            function scrollToBottom() {
+    var chatBox = $('#chat-box');
+    chatBox.scrollTop(chatBox[0].scrollHeight);
+}
+
+            function loadMessages() {
+                $.ajax({
+                    url: '/get_messages/{{ converse.id }}',
+                    method: 'GET',
+                    data: {
+                        last_message_time: lastMessageTime  // Send the ISO 8601 timestamp
+                    },
+                    success: function(data) {
+                        if (data.length > 0) {
+                            data.forEach(function(message) {
+                                var sender = message.sender_id == {{ current_user.id }} ? 'You' : 'Them';
+                                $('#chat-box').append(message.sender_id == {{ current_user.id }} ? 
+                                   '<p class="mymsg"> ' + message.message + '</p><br><small class="mytime">' + new Date(message.timestamp).toLocaleString() + '</small>' : 
+                                   '<p class="theirmsg"> ' + message.message + '</p><br><small class="theirtime">' + new Date(message.timestamp).toLocaleString() + '</small>'
+);
+    
+                                // Update lastMessageTime to the ISO 8601 format
+                                lastMessageTime = message.timestamp;
+                            });
+                        }
+    
+                        // Immediately start the next long-poll
+                        setTimeout(loadMessages, 0);  // Start the next poll immediately after finishing
+                    }
+                });
+            }
+    
+            // Start the long-polling process
+            loadMessages();
+            scrollToBottom();
+        });
+    </script>
+</div>
+</div>    
+</body>
+</html>

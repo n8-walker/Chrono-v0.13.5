@@ -1,0 +1,158 @@
+.convos {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 25%;
+    padding-left: 0;
+    padding-top: 10px;
+    background-color: white;
+    overflow-y: auto;  /* Ensure it doesn't scroll */
+    overflow-x: hidden;
+}
+
+.msgpane {
+    position: absolute;
+    top: 10px;
+    left: 30%;
+    width: 67%;
+    float: right;
+}
+
+.convos li {
+    list-style-type: none;
+    display: flexbox;
+    vertical-align: middle;
+    height: 70px;
+    margin-bottom: 1px;
+    border-radius: 7px;
+    background-color: whitesmoke;
+    margin-right: 10px;
+}
+
+.convos a{
+    text-decoration: none;
+    color: black;
+}
+
+.convos li:hover{
+    background-color: rgb(221, 219, 219);
+}
+
+.convos img{
+    margin-left: 20px;
+    vertical-align: middle;
+    position: relative;
+    top: 10px;
+}
+
+.convos h2{
+    padding-left: 40px;
+}
+
+.convos h4{
+    position: relative;
+    top: -60px;
+    left: 80px;
+}
+
+.convos p{
+    position: relative;
+    top: -110px;
+    left: 80px;
+}
+
+.tbox textarea{
+    border: none;
+    border-radius: 15px;
+    width: 80%;
+    padding: 15px 10px;
+    font-size: large;
+    font-family: 'Montserrat',sans-serif;
+}
+
+.send{
+    border: none;
+    border-radius: 15px;
+    width: 75px;
+    padding: 15px 20px;  
+    position: relative;
+    top: -20px;  
+    background-color: blueviolet;
+    color: white;
+    font-size: large;
+}
+
+.send:hover{
+    background-color: rgb(115, 35, 190);    
+}
+
+.tbox {
+    position: fixed;
+    bottom: 0;
+    width: 70%;
+    background-color: whitesmoke;
+    margin-top: 10px;
+}
+
+.details {
+    position: fixed;
+    top: 0;
+    left: 25.01%;
+    width: 75%;
+    background-color: white;
+    border-left: 10px black;
+}
+
+.details h3{
+    margin-left: 25px;
+    
+}
+
+.details p{
+    position: fixed;
+    top: 40px;
+    margin-left: 80px;
+}
+
+.mymsg {
+    background-color: lightgreen;
+    color: rgb(0, 0, 0);
+    border-radius: 15px;
+    padding: 10px 20px;
+    width: auto;
+    position: relative;
+    left: 50%;
+    width: 45%;
+    z-index: -1;
+}
+
+.mytime {
+    position: absolute;
+    left: 90%;
+    margin-top: -35px;
+    z-index: -1;
+    float: right;
+}
+
+.theirmsg {
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    border-radius: 15px;
+    padding: 10px 20px;
+    width: auto;
+    position: relative;
+    width: 45%;
+    z-index: -1;
+}
+
+.theirtime {
+    position: absolute;
+    right: 90%;
+    margin-top: -35px;
+    z-index: -1;
+    float: left;
+}
+
+#chat-box {
+}
