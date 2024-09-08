@@ -49,7 +49,7 @@
                     <a href="{{ url_for('clubs.list_clubs') }}"><i class="fas fa-users" style="color: rgba(179, 0, 0, 0.601);"></i>&nbsp; Club</a>
                     <a href="{{ url_for('league_leaderboard' , league_name=current_user.league) }}"><i class="fas fa-trophy" style="color: rgb(255, 230, 4);"></i>&nbsp; Leaderboard</a>
                     <a href="{{ url_for('resources') }}"><i class="fas fa-book" style="color: rgba(0, 0, 255, 0.607);"></i>&nbsp; Resources</a>
-                    <p style="font-weight: 300; color: rgb(107, 105, 105); position: fixed; left: 2%; bottom: 2%; ">Chrono v 0.13.5</p>
+                    <p style="font-weight: 300; color: rgb(107, 105, 105); position: fixed; left: 2%; bottom: 2%; ">Chrono v0.13.7</p>
                 </div>
             </div>  
               
@@ -114,12 +114,16 @@
         <div class="dp">
             <i class="fas fa-shield-alt fa-10x"></i><br>
             <div class="club_name">
-            <h1>{{ club.name }}</h1>
+            <h1>{{ club.name }} - {% if imem == 1 %} 
+                                  {{ imem }} Member
+                                  {% else %}
+                                  {{ imem }} Members
+                                  {% endif %}</h1>
             <br>
             <p class="cdes">{{ club.description }}</p>
             <p class="ccreator">Created by: {{ club.creator.display_name or club.creator.username}}</p>
             </div>
-            {% if current_user.club_id == club.codename %}
+            {% if current_user.club_id == club.id %}
                 <form action="{{ url_for('clubs.leave_club') }}" method="post">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <button class="joinbtn" type="submit">Leave Club</button>
@@ -132,7 +136,121 @@
 
             {% endif %}
     {% endblock %}
+        </div>
+        <div class="members">    
+            <h2><i class="fas fa-star"></i> Top Members</h2>
+            <ul>
+                {% for top6_member in top6_members %}
+                    <li><img src="/static/uploads/{{ top6_member.profile_image }}" width="30px" height="30px">&nbsp;&nbsp;&nbsp; <p>{{ top6_member.display_name }}</p></li>
+                {% else %}
+                    <li>No members found in this club.</li>
+                {% endfor %}
+             </ul>   
+        </div>
+        <div class="events">
+            <h2><i class="fa fa-flag"></i> Events</h2>
+            <ul>
+                {% for event in events %}
+                    <li onclick="openevent()"><p>{{ event.title }}</p></li>
+                    <script>
+                        function openevent(){
+                            document.getElementById('popevent').style.display = 'flex';
+                        }
         
+                        function closeevent(){
+                            document.getElementById('popevent').style.display = 'none';
+                        }
+                    </script>
+               <div class="popev" id="popevent">
+                   <div id="announce" class="announce">
+                       <button style="font-size: large; padding: 5px 10px;" onclick="closeevent()">&times;</button>
+                       <h2>{{ event.title }}</h2>
+                       <p>{{ event.description }}</p>
+                       <h6>{{ event.date }}</h6>
+                   </div>
+               </div>
+                {% else %}
+                    <li>No events in this club.</li> 
+                {% endfor %} 
+                {% if current_user.id == club.creator_id and current_user.club_id == club.id %}
+                <button class="events_button" onclick="openev()"><i class="fa fa-flag"></i> Set an event</button>
+                {% endif %}
+                <script>
+                    function openev(){
+                        document.getElementById('popev').style.display = 'flex';
+                    }
+    
+                    function closeev(){
+                        document.getElementById('popev').style.display = 'none';
+                    }
+                </script>
+               <div class="popev" id="popev">
+                   <div id="announce" class="announce">
+                       <button style="font-size: large; padding: 5px 10px;" onclick="closeev()">&times;</button>
+                       <h2>Set an Event</h2>
+                       <form method="post" action="{{ url_for('clubs.events', club_id=club.id) }}">
+                           <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                           <label for="title">Title:</label><br><br>
+                           <input type="text" id="title" name="title" required placeholder="Title"><br><br>
+                           <label for="description">Description:</label><br><br>
+                           <textarea id="description" name="description" rows="4" cols="25" required placeholder="Type the infomation about the announce"></textarea><br><br>
+                           <label for="Date">Date:</label><br><br>
+                           <input type="date" id="date" name="date" required><br><br>
+                           <button type="submit">Post</button><br>
+                       </form>
+                   </div>
+               </div>
+             </ul>  
+             <br>
+             <br>
+        </div>
+        <br>
+        <br>
+        {% if current_user.id == club.creator_id and current_user.club_id == club.id %}
+        <div class="announcebtn">
+            <hr>
+            <h2><i class="fa fa-pencil-alt"></i> Post an Announcement</h2>
+            <button onclick="openup()"><i class="fa fa-bullhorn"></i> Announce</button>
+            <script>
+                function openup(){
+                    document.getElementById('popup').style.display = 'flex';
+                }
+
+                function closeup(){
+                    document.getElementById('popup').style.display = 'none';
+                }
+            </script>
+        </div>
+        <div class="popup" id="popup">
+            <div id="announce" class="announce">
+                <button style="font-size: large; padding: 5px 10px;" onclick="closeup()">&times;</button>
+                <h2>Post an Announcement</h2>
+                <form method="post" action="{{ url_for('clubs.announce', club_id=club.id) }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <label for="title">Title:</label><br><br>
+                    <input type="text" id="title" name="title" required placeholder="Title"><br><br>
+                    <label for="content">Content:</label><br><br>
+                    <textarea id="content" name="content" rows="4" cols="25" required placeholder="Type the infomation about the announce"></textarea><br>
+                    <button type="submit">Post</button><br>
+                </form>
+            </div>
+        </div>
+        {% else %}
+        <div class="announcebtn">
+            <hr>
+            <h2><i class="fa fa-bullhorn"></i> Announcements</h2>
+            </div>
+        {% endif %}
+        <div class="announcements">
+            {% if ian < 1 %}
+            <h1>No Announcements Recieved.</h1>
+            {% else %}
+            {% for ans in anns %}  
+            <div class="post">
+                <b>{{ ans.title }}</b> <p>{{ ans.content }}</p>  <h6>{{ ans.date }}</h6>  <h6>{{ ans.announcer }}</h6>
+            </div>     
+            {% endfor %}   
+            {% endif %} 
         </div>
     </div>
  </div>

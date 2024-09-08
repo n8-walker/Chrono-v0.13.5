@@ -21,6 +21,8 @@
     border-radius: 8px;
     background-color: #ddd;
     box-shadow: 0 0 7px rgb(207, 207, 207);
+    position: relative;
+    top: -15px;
 }
 
 progress::-webkit-progress-bar {
@@ -35,17 +37,39 @@ progress::-webkit-progress-value {
 
 .overall-progress-block {
     width: 100%;
+    height: min-content;
     margin: 0 auto;
+    text-align: right;
+    background-color: #ffafff00;
+}
+
+.fraction {
+    position: relative;
+    top: -50px;
     text-align: center;
-    background-color: #ffafff;
+}
+
+img {
+    float: left;
+    border-radius: 50%;
+    position: relative;
+    top: -10px;
+}
+
+.name {
+    float: left;
+    position: relative;
+    top: -15px;
 }
     </style>
 </head>
 <body>
     <div class="overall-progress-block">
-        <h2><i class="icon fas fa-gamepad"></i> Level {{ level }} </h2><br>
-        <progress max="100" value="{{ xp_percent }}"></progress><br><br>
-        <p><b>{{ xp_earned }} XP </b>earned out of <b>{{ level_xp }} XP</b></p>
+        <img width="45px" src="/static/uploads/{{ current_user.profile_image }}">
+        <p class="name">{{ current_user.display_name.split(' ')[0] }}</p>
+        <p><i class="icon fas fa-gamepad"></i> Level {{ level }} </p> 
+        <progress max="100" value="{{ xp_percent }}"></progress>
+        <p class="fraction">{{ xp_earned }} XP/{{ level_xp }} XP</p>
     </div>
 </body>
 </html>

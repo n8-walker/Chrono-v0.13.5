@@ -23,7 +23,7 @@ body {
 .navbar {
   display: flex;
   flex-wrap: wrap; /* Ensures flex items wrap within the container */
-  max-width: 100%; /* Prevent container from exceeding viewport */
+  width: 100%; /* Prevent container from exceeding viewport */
   justify-content: space-between;
   align-items: center;
   padding: 5px 20px;
@@ -219,46 +219,4 @@ background: #999999;
   padding: 20px;
   color: white;
   font-size: 1.5em;
-}
-
-@media (max-width: 1267px) {
-
-.premium {
-  display: none;
-}
-.navbar {
-  width: 100%;
-}
-.searchu{
-  display: none;
-}
-.profile-name{
-  display: none;
-}
-html, body {
-  overflow-x: hidden; /* Prevent horizontal scrolling */
-  max-width: 100%;    /* Ensure no element extends beyond the viewport */
-  margin: 0;
-  padding: 0;
-}
-.booty {
-  max-width: 100%;
-}
-img, iframe, video {
-  max-width: 100%; /* Ensure media elements fit within the viewport */
-  height: auto;
-  display: block;
-}
-.dropdown-menu {
-  position: relative;
-  top: 2%;
-  left: 65px;
-  background-color: #ffffff;
-  width: 250px;
-  overflow: auto;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-  border-radius: 10px;
-  overflow-x: hidden;
-}
 }

@@ -16,7 +16,8 @@
 </head>
 <body>
 {% if current_user.is_authenticated %}
-<nav class="navbar">
+<div class="booty">        
+    <nav class="navbar">
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()" style="float: left;">&times;</a>
         <div class="nbutton">
@@ -25,26 +26,31 @@
             <a href="{{ url_for('clubs.list_clubs') }}"><i class="fas fa-users" style="color: rgba(179, 0, 0, 0.601);"></i>&nbsp; Club</a>
             <a href="{{ url_for('league_leaderboard' , league_name=current_user.league) }}"><i class="fas fa-trophy" style="color: rgb(255, 230, 4);"></i>&nbsp; Leaderboard</a>
             <a href="{{ url_for('resources') }}"><i class="fas fa-book" style="color: rgba(0, 0, 255, 0.607);"></i>&nbsp; Resources</a>
-            <p style="font-weight: 300; color: rgb(107, 105, 105); position: fixed; left: 2%; bottom: 2%; ">Chrono v 0.13.5</p>
+            <p style="font-weight: 300; color: rgb(107, 105, 105); position: fixed; left: 2%; bottom: 2%; ">Chrono v0.13.7</p>
         </div>
     </div>  
       
       <div class="logo-container">
         <span style="float: left; font-size:30px;cursor:pointer; padding: 4px;" onclick="openNav()">&#9776 </span>
         <img src="https://i.ibb.co/YBxkyWP/Chrono.png" alt="Chrono Logo" style="float: left;"> <p style="color: black; float: left; font-weight: 550; margin-top: 15px;"> CHRON</p><p style="color: #8642f5;float: right; font-weight: 550; margin-top: 15px;">O</p>
-      </div>
-
+      </div>              
       <script>
-      function openNav() {
-        document.getElementById("mySidenav").style.width = "18.301610541727672035139092240117%";
-        document.getElementById('overlay').style.display = 'block';
-      }
+        if (window.innerWidth <= 768) {
+            widthPercentage = "100%";
+        } else {
+            widthPercentage = "18.301610541727672035139092240117%";
+        }
+        function openNav() {
+          document.getElementById("mySidenav").style.width = widthPercentage;
+          document.getElementById('overlay').style.display = 'block';
+        }
       
-      function closeNav() {
-        document.getElementById("mySidenav").style.width = "0";
-        document.getElementById('overlay').style.display = 'none';
-      }
+        function closeNav() {
+          document.getElementById("mySidenav").style.width = "0";
+          document.getElementById('overlay').style.display = 'none';
+        }
       </script>
+      
 
     <div class="profile">
         <form class="searchu" action="{{ url_for('search.search_users') }}" method="GET">
@@ -54,6 +60,10 @@
        <div class="click"> 
 <img src="{{ url_for('static', filename='uploads/' + current_user.profile_image) }}" alt="Profile Picture" class="profile-pic">
 <span class="profile-name">{{current_user.display_name or current_user.username}}</span>
+
+    </div>
+</div>
+</nav>        
 <div class="dropdown-menu">
     <img src="{{ url_for('static', filename='uploads/' + current_user.profile_image) }}" alt="Profile Picture" class="profile-p">
     <h1 class="profile-n">{{ current_user.display_name or current_user.username }}</h1>
@@ -81,10 +91,7 @@
         });
         </script>
 </div>
-    </div>
-</div>
-</nav>
-    <div class="booty">
+    <div class="container">
 
     <h1>Available Clubs</h1>
     <form class="csearch" action="{{ url_for('clubs.list_clubs') }}" method="GET">
@@ -105,5 +112,6 @@
 {% else %}
 Login
 {% endif %}
+</div>
 </body>
 </html>

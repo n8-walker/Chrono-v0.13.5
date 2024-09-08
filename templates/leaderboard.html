@@ -49,7 +49,7 @@ window.addEventListener('resize', checkScreenWidth);
             <a href="{{ url_for('clubs.list_clubs') }}"><i class="fas fa-users" style="color: rgba(179, 0, 0, 0.601);"></i>&nbsp; Club</a>
             <a href="{{ url_for('league_leaderboard' , league_name=current_user.league) }}"><i class="fas fa-trophy" style="color: rgb(255, 230, 4);"></i>&nbsp; Leaderboard</a>
             <a href="{{ url_for('resources') }}"><i class="fas fa-book" style="color: rgba(0, 0, 255, 0.607);"></i>&nbsp; Resources</a>
-            <p style="font-weight: 300; color: rgb(107, 105, 105); position: fixed; left: 2%; bottom: 2%; ">Chrono v 0.13.5</p>
+            <p style="font-weight: 300; color: rgb(107, 105, 105); position: fixed; left: 2%; bottom: 2%; ">Chrono v0.13.7</p>
         </div>
     </div>  
       
@@ -109,11 +109,6 @@ window.addEventListener('resize', checkScreenWidth);
 </div>
 </nav>
 <div class="booty">
-    <script src="https://unpkg.com/darkmode-js/lib/darkmode-js.min.js"></script>
-    <script>
-        new Darkmode().showWidget();
-    </script> 
-
     <center><h1>{{ league_name }} League Leaderboard</h1></center>
     <table>
         {% for user in users %}

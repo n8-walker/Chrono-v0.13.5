@@ -144,8 +144,9 @@ class User(UserMixin, db.Model):
     league = db.Column(db.String(80), nullable=False, default='Tantalum')
     yt_badge = db.Column(db.Boolean, default=False)
     account_type = db.Column(db.Text, default='Free')
+    club_name = db.Column(db.String(150))
     # Relationship with the club
-    club = db.relationship('Club', foreign_keys=[club_id])
+    club = db.relationship('Club', backref=db.backref('members', lazy=True), foreign_keys=[club_id])
     # Relationship with followers
     followers = db.relationship('Follow', foreign_keys=[Follow.followed_id],
                                 backref=db.backref('followed', lazy='joined'),
@@ -191,6 +192,25 @@ class Question(db.Model):
     question = db.Column(db.String(200), nullable=False)
     options = db.Column(db.PickleType, nullable=False)
     answer = db.Column(db.String(50), nullable=False)
+
+class ClubAnnouncements(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(200), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    announcer = db.Column(db.Integer, nullable=False)
+    club_id = db.Column(db.Integer, db.ForeignKey('club.id'))
+    date = db.Column(db.Text, nullable=False)
+
+    club = db.relationship('Club', foreign_keys=[club_id])
+
+class ClubEvents(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(200), nullable=False)
+    description = db.Column(db.String(200), nullable=False)
+    club_id = db.Column(db.Integer, db.ForeignKey('club.id'))
+    date = db.Column(db.Text, nullable=False)
+
+    club = db.relationship('Club', foreign_keys=[club_id])
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -497,6 +517,172 @@ def progress():
     db.session.commit()
 
     return render_template('progress.html', xp_earned=xp_earned, xp_percent=xp_percent, level=level, level_xp=level_xp)
+
+@app.route('/lvlmobile')
+@login_required
+def lvl_mobile():
+    xp_earned = current_user.xp_count
+
+    if xp_earned <= 100:
+        level = 0
+        level_xp = 100
+    elif xp_earned <= 250:
+        level = 1
+        level_xp = 250
+    elif xp_earned <= 500:
+        level = 2
+        level_xp = 500
+    elif xp_earned <= 800:
+        level = 3
+        level_xp = 800
+    elif xp_earned <= 1200:
+        level = 4
+        level_xp = 1200
+    elif xp_earned <= 1700:
+        level = 5
+        level_xp = 1700
+    elif xp_earned <= 2300:
+        level = 6
+        level_xp = 2300
+    elif xp_earned <= 3000:
+        level = 7
+        level_xp = 3000
+    elif xp_earned <= 3800:
+        level = 8
+        level_xp = 3800
+    elif xp_earned <= 4700:
+        level = 9
+        level_xp = 4700
+    elif xp_earned <= 5700:
+        level = 10
+        level_xp = 5700
+    elif xp_earned <= 6800:
+        level = 11
+        level_xp = 6800
+    elif xp_earned <= 8000:
+        level = 12
+        level_xp = 8000
+    elif xp_earned <= 9300:
+        level = 13
+        level_xp = 9300
+    elif xp_earned <= 10700:
+        level = 14
+        level_xp = 10700
+    elif xp_earned <= 12200:
+        level = 15
+        level_xp = 12200
+    elif xp_earned <= 13800:
+        level = 16
+        level_xp = 13800
+    elif xp_earned <= 15500:
+        level = 17
+        level_xp = 15500
+    elif xp_earned <= 17300:
+        level = 18
+        level_xp = 17300
+    elif xp_earned <= 19200:
+        level = 19
+        level_xp = 19200
+    elif xp_earned <= 21200:
+        level = 20
+        level_xp = 21200
+    elif xp_earned <= 23300:
+        level = 21
+        level_xp = 23300
+    elif xp_earned <= 25500:
+        level = 22
+        level_xp = 25500
+    elif xp_earned <= 27800:
+        level = 23
+        level_xp = 27800
+    elif xp_earned <= 30200:
+        level = 24
+        level_xp = 30200
+    elif xp_earned <= 32700:
+        level = 25
+        level_xp = 32700
+    elif xp_earned <= 35300:
+        level = 26
+        level_xp = 35300
+    elif xp_earned <= 38000:
+        level = 27
+        level_xp = 38000
+    elif xp_earned <= 40800:
+        level = 28
+        level_xp = 40800
+    elif xp_earned <= 43700:
+        level = 29
+        level_xp = 43700
+    elif xp_earned <= 46700:
+        level = 30
+        level_xp = 46700
+    elif xp_earned <= 49800:
+        level = 31
+        level_xp = 49800
+    elif xp_earned <= 53000:
+        level = 32
+        level_xp = 53000
+    elif xp_earned <= 56300:
+        level = 33
+        level_xp = 56300
+    elif xp_earned <= 59700:
+        level = 34
+        level_xp = 59700
+    elif xp_earned <= 63200:
+        level = 35
+        level_xp = 63200
+    elif xp_earned <= 66800:
+        level = 36
+        level_xp = 66800
+    elif xp_earned <= 70500:
+        level = 37
+        level_xp = 70500
+    elif xp_earned <= 74300:
+        level = 38
+        level_xp = 74300
+    elif xp_earned <= 78200:
+        level = 39
+        level_xp = 78200
+    elif xp_earned <= 82200:
+        level = 40
+        level_xp = 82200
+    elif xp_earned <= 86300:
+        level = 41
+        level_xp = 86300
+    elif xp_earned <= 90500:
+        level = 42
+        level_xp = 90500
+    elif xp_earned <= 94800:
+        level = 43
+        level_xp = 94800
+    elif xp_earned <= 99200:
+        level = 44
+        level_xp = 99200
+    elif xp_earned <= 103700:
+        level = 45
+        level_xp = 103700
+    elif xp_earned <= 108300:
+        level = 46
+        level_xp = 108300
+    elif xp_earned <= 113000:
+        level = 47
+        level_xp = 113000
+    elif xp_earned <= 117800:
+        level = 48
+        level_xp = 117800
+    elif xp_earned <= 122700:
+        level = 49
+        level_xp = 122700
+    elif xp_earned <= 125000:
+        level = 50
+        level_xp = 125000
+
+
+    xp_percent = int(xp_earned / level_xp * 100) if level_xp >= 0 else 0
+    current_user.level = level
+    db.session.commit()
+
+    return render_template('lvlm.html', xp_earned=xp_earned, xp_percent=xp_percent, level=level, level_xp=level_xp)
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -839,7 +1025,7 @@ def create_club():
             codename = request.form['codename']
             creator_id = current_user.id  # Assuming you're using Flask-Login
             new_club = Club(name=name, description=description, creator_id=creator_id, codename=codename)
-            current_user.club_id = codename
+            current_user.club_name = codename
             db.session.add(new_club)
             db.session.commit()
             return redirect(url_for('clubs.list_clubs'))
@@ -852,7 +1038,64 @@ def create_club():
 @login_required
 def view_club(club_id):
     club = Club.query.get_or_404(club_id)
-    return render_template('clubs/detail.html', club=club)
+    msg = ClubAnnouncements.query.all()
+    events = ClubEvents.query.filter_by(club_id=club.id).all()
+    annz = []
+    ian = len(annz)
+    for i in msg:
+        if i.club_id == club.id:
+            annz.append(i)
+    annx = sorted(annz, key=lambda i: i.id, reverse=True)
+    anns = annx[:6]
+    if len(annz) >= 7:
+        old_ann = ClubAnnouncements.query.filter_by(club_id=club.id).first()
+        db.session.delete(old_ann)
+        db.session.commit()
+    if len(events) >= 6:
+        old_event = ClubEvents.query.filter_by(club_id=club.id).first()
+        db.session.delete(old_event)
+        db.session.commit()
+    if club.codename == current_user.club_name:
+        current_user.club_id = club_id
+        db.session.commit()
+    users = User.query.all()
+    members = []
+    for user in users:
+        if user.club_id == club.id:
+            members.append(user)
+    top_members = sorted(members, key=lambda user: user.xp_count, reverse=True)
+    top6_members = top_members[:6]
+    imem = len(members)
+    return render_template('clubs/detail.html', club=club, users=users, members=members, top6_members=top6_members, anns=anns, imem=imem, events=events, ian=ian)
+
+@clubs_bp.route('/announce/<int:club_id>', methods=['POST'])
+@login_required
+def announce(club_id):
+    club = Club.query.get_or_404(club_id)
+    if request.method == 'POST':
+        title = request.form['title']
+        content = request.form['content']
+        announcer = current_user.username
+        club_id = club.id
+        date = datetime.now().date()
+        new_announce = ClubAnnouncements(title=title, content=content, announcer=announcer, club_id=club_id, date=date)
+        db.session.add(new_announce)
+        db.session.commit()
+    return redirect(url_for('clubs.view_club', club_id=club.id))
+
+@clubs_bp.route('/events/<int:club_id>', methods=['POST'])
+@login_required
+def events(club_id):
+    club = Club.query.get_or_404(club_id)
+    if request.method == 'POST':
+        title = request.form['title']
+        description = request.form['description']
+        club_id = club.id
+        date = request.form['date']
+        new_event = ClubEvents(title=title, description=description, club_id=club_id, date=date)
+        db.session.add(new_event)
+        db.session.commit()
+    return redirect(url_for('clubs.view_club', club_id=club.id))
 
 @clubs_bp.route('/join/<int:club_id>', methods=['POST'])
 @login_required
@@ -872,12 +1115,13 @@ def join_club(club_id):
 def leave_club():
     if current_user.club_id is None:
         flash("You are not currently in any club.", "warning")
-        return redirect(url_for('dashboard'))  # Adjust this URL to your profile or home page
+        return redirect(url_for('clubs.list_clubs'))  # Adjust this URL to your profile or home page
 
     current_user.club_id = None
+    current_user.club_name = None
     db.session.commit()
     flash("Successfully left the club.", "success")
-    return redirect(url_for('dashboard'))  # Adjust this URL to your profile or home page
+    return redirect(url_for('clubs.list_clubs'))  # Adjust this URL to your profile or home page
 
 app.register_blueprint(clubs_bp)
 
@@ -1007,5 +1251,6 @@ def timer10800():
     return render_template('/study/t5.html')
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 8080))  # Get PORT from environment or use 8080 as default
-    app.run(host='0.0.0.0', port=port)        # Run the app on all available interfaces and the specified port
+    with app.app_context():
+        db.create_all()
+        app.run(debug=True)        # Run the app on all available interfaces and the specified port

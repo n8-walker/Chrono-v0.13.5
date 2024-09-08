@@ -27,7 +27,7 @@
                     <a href="{{ url_for('clubs.list_clubs') }}"><i class="fas fa-users" style="color: rgba(179, 0, 0, 0.601);"></i>&nbsp; Club</a>
                     <a href="{{ url_for('league_leaderboard' , league_name=current_user.league) }}"><i class="fas fa-trophy" style="color: rgb(255, 230, 4);"></i>&nbsp; Leaderboard</a>
                     <a href="{{ url_for('resources') }}"><i class="fas fa-book" style="color: rgba(0, 0, 255, 0.607);"></i>&nbsp; Resources</a>
-                    <p style="font-weight: 300; color: rgb(107, 105, 105); position: fixed; left: 2%; bottom: 2%; ">Chrono v 0.13.5</p>
+                    <p style="font-weight: 300; color: rgb(107, 105, 105); position: fixed; left: 2%; bottom: 2%; ">Chrono v0.13.7</p>
                 </div>
             </div>  
               
@@ -249,7 +249,144 @@
         });
         
     </script>
+    </div>
 </div>
+<div class="face">
+    <style>
+        .face {
+            width: 100%;
+        }
+        .progress {
+            width: 100%;
+            display: block;
+            align-content: center;
+            border: 0cap;
+            background-color: whitesmoke;
+            height: 80px;
+            margin: 0;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, 0.404);
+            position: fixed;
+            top: 0;
+        }
+
+        .mnav {
+            display: flexbox;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: white;
+            height: 80px;
+            border-radius: 20px 20px 0 0;
+            box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, 0.404);
+            text-align: center;
+        }
+        .mnav i{
+            padding: 10px;
+        }
+
+        .fa-tachometer-alt {
+        }
+
+        .league, .utasks, .qq, .timerm, .searchm {
+            margin-left: 10px;
+            margin-right: 10px;
+            border-radius: 7px;
+            box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, 0.404);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .league {
+            background-color: #9fff8c;
+            padding: 20px;
+        }
+
+        .league h3{
+            text-align: center;
+        }   
+
+        .utasks {
+            background-color: #8cb0ff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .qq {
+            padding: 20px;
+        }
+
+        .timerm {
+            padding: 20px;
+        }
+
+        button {
+            border: none;
+            background-color: blueviolet;
+            padding: 10px 20px;
+            border-radius: 7px;
+            color: white;
+        }
+
+        .mpremium {
+            box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, 0.404);
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+    <iframe scrolling="no" class="progress" src="{{ url_for('lvl_mobile') }}"></iframe>
+    <nav class="mnav">
+        <a href="{{ url_for('manage_tasks') }}"><i style="color: rgb(43, 183, 226); font-size: 31px;" class="fas fa-tasks"></i></a>
+        <a href="{{ url_for('clubs.list_clubs') }}"><i style="color: rgb(206, 0, 0); font-size: 31px;" class="fas fa-users"></i></a>
+        <a href="{{ url_for('dashboard') }}"><i style="color: white; font-size: 38px;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            background-color: blueviolet;
+            position: relative;            
+            bottom: 20px;
+            font-size: large;" class="fas fa-tachometer-alt"></i></a>
+        <a href="{{ url_for('league_leaderboard' , league_name=current_user.league) }}"><i style="color: rgb(226, 183, 43); font-size: 31px;" class="fas fa-trophy"></i></a>
+        <a href="{{ url_for('resources') }}"><i style="color: rgb(0, 38, 255); font-size: 31px;" class="fas fa-book"></i></a>
+    </nav>
+    <br><br>
+    <br><br>
+
+    <h2 style="margin-left: 10px;">Hello! {{ current_user.display_name.split(' ')[0] }}</h2>
+    <div class="league">
+        <h3><b>{{ current_user.xp_count }} XP</b><br>
+            <i class="fas fa-star" style="color: gold; font-size: 28px; text-align: center;"></i><br>You are in the {{ current_user.league }} league!</h3>
+    </div>
+    <div class="utasks">
+        <h3>Upcoming Tasks</h3>
+        {% if task_count > 0 %}
+        <ol class="utl">
+                {% for task in tasks %}
+                <li>{{ task.description }}</li>
+                {% endfor %}
+        </ol>
+        {% else %}
+        <p style="padding: 20px 10px; font-weight: 400; text-align: center;"><i style="color: rgb(0, 119, 255); font-size: xx-large;text-align: center;" class="fas fa-thumbs-up"></i><br><br> No tasks left</p>   
+        {% endif %}
+    </div>
+    <div class="qq">
+        <h2>New Quizzes Available at the quizzes Aisle!</h2>
+        <p>Try them soon and earn xp</p>
+        <button onclick="window.location.href='/quizzes'" style="font-family: 'Montserrat', sans-serif;">Explore Now</button>
+    </div>            
+    <div class="timerm">
+        <h2 style="text-align: center;"><i class="fas fa-clock"></i>&nbsp;Time Vault</h2>
+        <p style="padding: 0 20px;">Use a timer to keep yourself in the studymode. the timer has <b>Relaxing music</b> along with the timer</p>
+        <center><a href="/study/time"><button class="Upgrade">Timers</button></a></center>
+    </div>
+    <div class="mpremium">
+        <h2 style="text-align: center;"><i class="fas fa-smile"></i>&nbsp;Buy or Donate</h2>
+        <p style="text-align: justify;padding: 0 20px; text-align: center;"><b>Nate Walker aka Chathurka Uddheepana(Me)</b> is maintaining this platform by <b>myself.</b> So if you want to help me you can either buy an <b>Upgrade or you can Donate.</b></p>
+        <center><a href="/donate"><button class="donate">Donate</button></a>
+        <a href="/upgrade"><button class="upgrade">Upgrade</button></a></center>  
+        <br><br>
+        <br><br><br>
+    </div>
 </div>
 </body>
 </html>

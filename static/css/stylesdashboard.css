@@ -304,42 +304,18 @@ li:last-child {
 .arrow.right {
   right: 10px;
 }
+
+.face {
+  display: none;
+  width: 100%;
+}
+
 @media (max-width: 768px) {
-.tid {
-  display: none;
-}
-.noobj, .upcomingt, .recent-activities{
-  flex: 1;
-  max-width: 100%; /* Ensure elements do not become too small */
-  height: min-content;
-}
-.upcomingt {
-  display: none;
-}
-.recent-activities {
-  display: none;
-}
-.noobj {
-  background-color: #f0f4f8;
-  box-shadow: none;
-  border-radius: none;
-  border: none;
-  margin: 0% 0%;
-  padding: -20px;
-}
-.lr {
-  display: none;
-}
-.resources {
-  display: none;
-}
-.timer {
-  display: none;
-}
-.gallery-container {
-  display: none;
-}
-.premium {
-  display: none;
-}
+  .booty {
+    display: none;
+  }
+
+  .face {
+    display: block;
+  }
 }
