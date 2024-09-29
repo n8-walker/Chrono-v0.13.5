@@ -1,11 +1,6 @@
 .content {
-    position: absolute;
-    background-color: rgb(241, 239, 239);
-    border-width: 0;
-    margin: 0;
-    width: 70%;
-    padding-bottom: 80px;
-    padding: 0 15%;
+    position: relative;
+    top: 70px;
 }
 
 .label{
@@ -59,4 +54,18 @@
     position: absolute;
     top: 150px;
     width: 100%;
+}
+
+.delbtn {
+    padding: 10px 20px; 
+    border: none; 
+    border-radius: 7px; 
+    background-color: red; 
+    color: white; 
+    font-weight: 750; 
+    float: right;
+}
+
+.delbtn:hover {
+    background-color: rgb(184, 2, 2);    
 }

@@ -19,8 +19,13 @@
         <h2>Chats</h2>
         <ul>
         {% for chat in convos[::-1] %}
+        {% if chat.sender_id == current_user.id %}
+        <a href="/converse/{{chat.receiver.id}}"><li><img style="vertical-align: middle;" src="/static/uploads/{{chat.receiver.profile_image}}" width="50px" height="50px"><h4>{{ chat.receiver.display_name }}</h4><br>
+        <p>@{{ chat.sender.username }}</p></li></a>
+        {% else %}
         <a href="/converse/{{chat.sender.id}}"><li><img style="vertical-align: middle;" src="/static/uploads/{{chat.sender.profile_image}}" width="50px" height="50px"><h4>{{ chat.sender.display_name }}</h4><br>
         <p>@{{ chat.sender.username }}</p></li></a>
+        {% endif %}
         {% endfor %}
         </ul>
     </div>

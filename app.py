@@ -10,7 +10,7 @@ from math import ceil, sqrt
 from flask_wtf.csrf import CSRFProtect
 from flask_wtf import FlaskForm
 from wtforms import FileField, SubmitField
-import requests
+import pickle
 import os
 import random
 import uuid
@@ -101,8 +101,8 @@ search_bp = Blueprint('search', __name__, url_prefix='/search')
 
 class Follow(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    follower_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    followed_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    follower_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
+    followed_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -147,7 +147,7 @@ class Schedule(db.Model):
     priority = db.Column(db.Integer)
     type = db.Column(db.String(50))
     done = db.Column(db.Boolean, default=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'))
 
 class Club(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # Unique ID for each club
@@ -155,8 +155,8 @@ class Club(db.Model):
     description = db.Column(db.Text)  # Club description
     created_at = db.Column(db.DateTime, default=datetime.utcnow)  # When the club was created
     codename = db.Column(db.String(50), unique=True, nullable=False)
-    creator_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    other_user_id = db.Column(db.Integer, db.ForeignKey('user.id'))  # Another foreign key
+    creator_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'))
+    other_user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'))  # Another foreign key
 
     creator = db.relationship('User', foreign_keys=[creator_id])
     other_user = db.relationship('User', foreign_keys=[other_user_id])
@@ -188,8 +188,8 @@ class ClubEvents(db.Model):
 
 class UserMessages(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    reciever_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
+    reciever_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
     conversation_id = db.Column(db.Integer, db.ForeignKey('conversations.id'), nullable=False)
     message = db.Column(db.Text, nullable=False)
     date = db.Column(db.Date, nullable=False)   # Using Date type for storing dates
@@ -204,11 +204,10 @@ class UserMessages(db.Model):
     # Relationship with Conversations table
     conversation = db.relationship('Conversations', foreign_keys=[conversation_id])
 
-
 class Conversations(db.Model):
     id = db.Column(db.String(150), primary_key=True)
-    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
+    receiver_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
 
     # Define relationships for sender and receiver
     sender = db.relationship('User', foreign_keys=[sender_id])
@@ -219,21 +218,67 @@ class Conversations(db.Model):
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+def wierd_char_proximity(s):
+    vowels = "aeiou"
+    vow_count = 0
+    cons_count = 0
+    for char in s:
+        if char in vowels:
+            vow_count += 1
+            cons_count = 0
+        elif char.isalpha():  # Any consonant
+            cons_count += 1
+            vow_count = 0
+        if vow_count >= 3 or cons_count >= 3:
+            return True
+    return False
+
+def abnormal_repeat(s):
+    for i in range(len(s) - 2):
+        if s[i] == s[i+1] == s[i+2]:  # Check if three consecutive characters are the same
+            return True
+    return False
+
+def irregular_len(s):
+    if len(s.split(" ")[0]) >= 7:  # Checking the length of the first word
+        return True
+    return False
+
+def simple_tasks(s):
+    simple_words = [
+        "eat", "sleep", "test", "walk", "run", "play", "read", "write", "jump", 
+        "talk", "listen", "watch", "cook", "clean", "draw", "laugh", "sing", 
+        "swim", "dance", "shop", "think", "test"
+    ]
+    return s in simple_words  # Check if the input is in the list of simple tasks
+
 @app.route('/tasks', methods=['GET', 'POST'])
 @login_required
 def manage_tasks():
+    cheat = False
     if request.method == 'POST':
         description = request.form.get('description')
+        desc = description.lower()
         date_str = request.form.get('date')
         priority = request.form.get('priority')
         type = request.form.get('type')
         try:
-            date = datetime.strptime(date_str, '%Y-%m-%d').date()
-            new_task = Schedule(description=description, date=date, priority=priority, type=type, user_id=current_user.id)
-            db.session.add(new_task)
-            db.session.commit()
-            flash('Task added successfully!', 'success')
-            return redirect(url_for('manage_tasks'))
+            if wierd_char_proximity(desc):
+                cheat = True
+            elif abnormal_repeat(desc):
+                cheat = True
+            elif irregular_len(desc):
+                cheat = True
+            elif simple_tasks(desc):
+                cheat = True
+            else:
+                cheat = False
+                date = datetime.strptime(date_str, '%Y-%m-%d').date()
+                new_task = Schedule(description=description, date=date, priority=priority, type=type, user_id=current_user.id)
+                db.session.add(new_task)
+                db.session.commit()
+                flash('Task added successfully!', 'success')
+                return redirect(url_for('manage_tasks'))
         except ValueError:
             flash('Invalid date format. Please use YYYY-MM-DD.', 'error')
 
@@ -245,7 +290,8 @@ def manage_tasks():
     len_t = len(tasks)
 
     return render_template('tasks.html', tasks=tasks, tasks_completed=tasks_completed,
-                           tasks_completed_percent=tasks_completed_percent, len_t=len_t)
+                           tasks_completed_percent=tasks_completed_percent, len_t=len_t,
+                           cheat=cheat)
 
 # Callback to reload user object
 @login_manager.user_loader
@@ -328,13 +374,16 @@ def dashboard():
     for i in schedules:
         task_count += 1                
     first_three_tasks = Schedule.query.filter_by(user_id=current_user.id).order_by(Schedule.date).limit(5).all()
-    return render_template('dashboard.html', schedules=schedules, tasks=first_three_tasks, username=current_user.username, task_count=task_count, users=users, league=current_user.league)
+    annz = ClubAnnouncements.query.filter_by(club_id=current_user.club_id).all()
+    ian = len(annz)
+    annx = sorted(annz, key=lambda i: i.id, reverse=True)
+    anns = annx[:6]
+    return render_template('dashboard.html', schedules=schedules, tasks=first_three_tasks, username=current_user.username, task_count=task_count, users=users, league=current_user.league, anns=anns, ian=ian)
 
 @app.route('/mark_task_done/<int:task_id>', methods=['POST'])
 @login_required
 def mark_task_done(task_id):
     task = Schedule.query.get_or_404(task_id)
-    task.done = True
     current_user.xp_count += 10
     current_user.league = determine_league(current_user.xp_count)
     db.session.commit()
@@ -525,7 +574,6 @@ def progress():
 @login_required
 def lvl_mobile():
     xp_earned = current_user.xp_count
-
     if xp_earned <= 100:
         level = 0
         level_xp = 100
@@ -790,8 +838,15 @@ def update_profile():
         current_user.tiktok = request.form.get('tiktok')
         db.session.commit()
         flash('Profile updated successfully!', 'success')
-        return redirect(url_for('dashboard'))
+        return render_template('edit_profile.html')
     return render_template('edit_profile.html')
+
+@app.route('/delete/<user_id>')
+@login_required
+def delete_user(user_id):
+    db.session.delete(current_user)
+    db.session.commit()
+    return redirect(url_for('login'))
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
@@ -1041,13 +1096,9 @@ def create_club():
 @login_required
 def view_club(club_id):
     club = Club.query.get_or_404(club_id)
-    msg = ClubAnnouncements.query.all()
+    annz = ClubAnnouncements.query.filter_by(club_id=club.id).all()
     events = ClubEvents.query.filter_by(club_id=club.id).all()
-    annz = []
     ian = len(annz)
-    for i in msg:
-        if i.club_id == club.id:
-            annz.append(i)
     annx = sorted(annz, key=lambda i: i.id, reverse=True)
     anns = annx[:6]
     if len(annz) >= 7:
@@ -1157,10 +1208,13 @@ def league_leaderboard(league_name):
 @app.route('/youtube-test')
 def quiz():
     if current_user.yt_badge:
-        return render_template('already_passed.html')  # Redirect to a page indicating they can't retake the quiz
+        return render_template('already_passed.html')
 
     questions = Question.query.all()
-    selected_questions = random.sample([q.id for q in questions], 1)
+    if not questions:
+        return jsonify({'error': 'No questions available'}), 404  # Handle no questions case
+    
+    selected_questions = random.sample([q.id for q in questions], min(40, len(questions)))
     session['quiz_questions'] = selected_questions
     session['current_question_index'] = 0
     return render_template('ytt.html')
@@ -1168,6 +1222,7 @@ def quiz():
 @app.route('/next_question', methods=['GET'])
 @login_required
 def next_question():
+    print("Session data:", session)
     if 'quiz_questions' not in session or 'current_question_index' not in session:
         return jsonify({'error': 'Quiz session not found'}), 400
 
@@ -1180,11 +1235,16 @@ def next_question():
     if not question:
         return jsonify({'error': 'Question not found'}), 404
 
+    # Deserialize the options from bytes to a Python object
+    options = pickle.loads(question.options)
+
+    # Update the current question index
     session['current_question_index'] += 1
+
     return jsonify({
         'id': question.id,
         'question': question.question,
-        'options': question.options
+        'options': options  # Return the deserialized options
     })
 
 @app.route('/submit_quiz', methods=['POST'])
@@ -1340,8 +1400,11 @@ def get_messages(converse_id):
 
     return jsonify([])
 
+@app.route('/donate')
+def donate():
+    return render_template('donation.html')
 
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-        app.run(debug=True)        # Run the app on all available interfaces and the specified port
+        app.run(debug=True) 

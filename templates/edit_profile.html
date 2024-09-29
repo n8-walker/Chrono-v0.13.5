@@ -50,7 +50,7 @@
                 <a href="{{ url_for('clubs.list_clubs') }}"><i class="fas fa-users" style="color: rgba(179, 0, 0, 0.601);"></i>&nbsp; Club</a>
                 <a href="{{ url_for('league_leaderboard' , league_name=current_user.league) }}"><i class="fas fa-trophy" style="color: rgb(255, 230, 4);"></i>&nbsp; Leaderboard</a>
                 <a href="{{ url_for('resources') }}"><i class="fas fa-book" style="color: rgba(0, 0, 255, 0.607);"></i>&nbsp; Resources</a>
-                <p style="font-weight: 300; color: rgb(107, 105, 105); position: fixed; left: 2%; bottom: 2%; ">Chrono v0.14.0</p>
+                <p style="font-weight: 300; color: rgb(107, 105, 105); position: fixed; left: 2%; bottom: 2%; ">Chrono v0.15.1</p>
             </div>
         </div>  
           
@@ -81,7 +81,7 @@
     <span class="profile-name">{{current_user.display_name or current_user.username}}</span>
     <div class="dropdown-menu">
         <img src="{{ url_for('static', filename='uploads/' + current_user.profile_image) }}" alt="Profile Picture" class="profile-p">
-        <h1 class="profile-n">{{ current_user.display_name or current_user.username }}</h1>
+        <h3 class="profile-n">{{ current_user.display_name or current_user.username }}</h3>
         <p class="profile-n">Level {{ current_user.level }}</p>
         <a href="{{ url_for('dashboard') }}" style="float: left;"><i class="icon fas fa-home"></i> Dashboard</a>
         <a href="{{ url_for('profile', username=current_user.username) }}" style="float: left;"><i class="icon fas fa-user"></i> Profile</a>
@@ -109,65 +109,165 @@
         </div>
     </div>
     </nav>
-    <div class="content">
-        <h1 style="padding: 10px 20px;">Edit Your Profile</h1>
-    <form method="POST" action="{{ url_for('update_profile') }}" enctype="multipart/form-data">
-        <!-- Include CSRF token -->
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-        <div class="data">
-        <label class="label" for="display_name">Display Name:</label>
-        <input class="field" type="text" id="display_name" name="display_name" value="{{ user.display_name }}">
-        <br>        
-        </div>
-        <div class="data">
-        <label class="label" for="bio">Bio:</label>
-        <textarea class="field" id="bio" name="bio">{{ user.bio }}</textarea>
-        <br>                
-    </div>
-    <div class="data">
-      <h2>Social Media</h2>
-      <label class="label" for="social_links"><i style="color: red;" class="fab fa-youtube"></i>&nbsp;YouTube</label>
-      <input class="field" type="text" id="social_links" name="youtube" value="{{ user.youtube }}" placeholder="like this:- natewalkr123">
-      <br>        
-      <br>        
-      <br>        
-      <br>        
-      <label class="label" for="social_links"><i style="color: blue;" class="fab fa-facebook"></i>&nbsp;Facebook</label>
-      <input class="field" type="text" id="social_links" name="facebook" value="{{ user.facebook }}" placeholder="like this:- natewalkr123">
-      <br>        
-      <br>        
-      <br>        
-      <br>        
-      <label class="label" for="social_links"><i style="color: rgb(88, 188, 221);" class="fab fa-twitter"></i>&nbsp;Twitter</label>
-      <input class="field" type="text" id="social_links" name="twitter" value="{{ user.twitter }}" placeholder="like this:- natewalkr123">
-      <br>        
-      <br>        
-      <br>        
-      <br>        
-      <label class="label" for="social_links"><i style="color: purple;" class="fab fa-instagram"></i>&nbsp;Instagram</label>
-      <input class="field" type="text" id="social_links" name="insta" value="{{ user.insta }}" placeholder="like this:- natewalkr123">
-      <br>        
-      <br>        
-      <br>        
-      <br>        
-      <label class="label" for="social_links"><i class="fab fa-tiktok"></i>&nbsp;TikTok</label>
-      <input class="field" type="text" id="social_links" name="tiktok" value="{{ user.tiktok }}" placeholder="like this:- natewalkr123">
-      <br>
-      <br>        
-      <br>        
-      <br>        
-    </div>
-    <div class="data">                   
-      <button class="subtn" type="submit">Update Profile</button>
+    <style>
+      * {box-sizing: border-box}
+      body {font-family: "Lato", sans-serif;}
       
-  </div>
-  
-  </form>  
-        <div style="padding: 50px 0px;"><hr>
-            <label class="label" for="profile_picture">Profile Picture:</label>
-              <a  href="{{ url_for('upload')}}"><button class="fbtn">Update</button></a>
-        </div>
+      /* Style the tab */
+      .tab {
+        float: left;
+        border: 1px solid #ccc;
+        background-color: #f1f1f1;
+        width: 30%;
+        height: 100%;
+        position: fixed;
+        z-index: -1;
+      }
+      
+      /* Style the buttons inside the tab */
+      .tab button {
+        display: block;
+        background-color: inherit;
+        color: rgb(71, 71, 71);
+        padding: 22px 16px;
+        width: 100%;
+        border: none;
+        outline: none;
+        text-align: left;
+        cursor: pointer;
+        transition: 0.3s;
+        font-size: 17px;
+      }
+      
+      /* Change background color of buttons on hover */
+      .tab button:hover {
+        background-color: #ddd;
+      }
+      
+      /* Create an active/current "tab button" class */
+      .tab button.active {
+        background-color: #ccc;
+      }
+      
+      /* Style the tab content */
+      .tabcontent {
+        float: left;
+        padding: 0px 0px;
+        border: 1px solid #ccc;
+        width: 70%;
+        border-left: none;
+        height: 100%;
+        position: absolute;
+        left: 30%;
+        z-index: -1;
+      }
 
-    </div>
+      .navbar {
+        position: fixed;
+      }
+
+      </style>      
+      <div class="content">
+      <div class="tab">
+        <button class="tablinks" onclick="openCity(event, 'London')" id="defaultOpen"><i class="fas fa-user"></i>&nbsp;&nbsp;&nbsp;Profile Details</button>
+        <button class="tablinks" onclick="openCity(event, 'Paris')"><i class="fas fa-tasks"></i>&nbsp;&nbsp;&nbsp;Tests</button>
+        <button class="tablinks" onclick="openCity(event, 'Tokyo')"><i class="fas fa-exclamation-triangle"></i>&nbsp;&nbsp;&nbsp;Advanced Settings</button>
+      </div>
+          
+          <div id="London" class="tabcontent">
+            <h3 style="padding: 10px 20px;">Edit Your Profile</h3>
+        <form method="POST" action="{{ url_for('update_profile') }}" enctype="multipart/form-data">
+            <!-- Include CSRF token -->
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="data">
+            <label class="label" for="display_name">Display Name:</label>
+            <input class="field" type="text" id="display_name" name="display_name" value="{{ user.display_name }}">
+            <br>        
+            </div>
+            <div class="data">
+            <label class="label" for="bio">Bio:</label>
+            <textarea class="field" id="bio" name="bio">{{ user.bio }}</textarea>
+            <br>                
+        </div>
+        <div class="data">
+          <h3>Social Media</h3>
+          <label class="label" for="social_links"><i style="color: red;" class="fab fa-youtube"></i>&nbsp;YouTube</label>
+          <input class="field" type="text" id="social_links" name="youtube" value="{{ user.youtube }}" placeholder="like this:- natewalkr123">
+          <br>        
+          <br>        
+          <br>        
+          <br>        
+          <label class="label" for="social_links"><i style="color: blue;" class="fab fa-facebook"></i>&nbsp;Facebook</label>
+          <input class="field" type="text" id="social_links" name="facebook" value="{{ user.facebook }}" placeholder="like this:- natewalkr123">
+          <br>        
+          <br>        
+          <br>        
+          <br>        
+          <label class="label" for="social_links"><i style="color: rgb(88, 188, 221);" class="fab fa-twitter"></i>&nbsp;Twitter</label>
+          <input class="field" type="text" id="social_links" name="twitter" value="{{ user.twitter }}" placeholder="like this:- natewalkr123">
+          <br>        
+          <br>        
+          <br>        
+          <br>        
+          <label class="label" for="social_links"><i style="color: purple;" class="fab fa-instagram"></i>&nbsp;Instagram</label>
+          <input class="field" type="text" id="social_links" name="insta" value="{{ user.insta }}" placeholder="like this:- natewalkr123">
+          <br>        
+          <br>        
+          <br>        
+          <br>        
+          <label class="label" for="social_links"><i class="fab fa-tiktok"></i>&nbsp;TikTok</label>
+          <input class="field" type="text" id="social_links" name="tiktok" value="{{ user.tiktok }}" placeholder="like this:- natewalkr123">
+          <br>
+          <br>        
+          <br>        
+          <br>        
+        </div>
+        <div class="data">                   
+          <button class="subtn" type="submit">Update Profile</button>
+          
+      </div>
+      
+      </form>  
+            <div style="padding: 50px 0px;"><hr>
+                <label class="label" for="profile_picture">Profile Picture:</label>
+                  <a  href="{{ url_for('upload')}}"><button class="fbtn">Update</button></a>
+            </div>
+          </div>
+      
+      <div id="Paris" class="tabcontent">
+        <div style="background-color: rgb(255, 208, 208); padding: 20px 40px 60px 40px">
+          <h3 style="color: red;"><i class="fab fa-youtube"></i>&nbsp;&nbsp;Complete YouTube Exam</h3>
+          <ul><li style="color: red;">Complete the following quiz to earn the youtuber badge</li></ul>
+          <button class="delbtn" onclick="window.location.href='/youtube-test'">Complete</button>
+        </div>
+      </div>
+      
+      <div id="Tokyo" class="tabcontent">
+        <div style="background-color: rgb(255, 208, 208); padding: 20px 40px 60px 40px">
+          <h3 style="color: red;"><i class="fas fa-trash"></i>&nbsp;&nbsp;Delete My Account</h3>
+          <ul><li style="color: red;">If you click the "Delete Account" Button Below, there will be no turning backs. Your Progress, Followers, Created Clubs will be deleted forever!</li></ul>
+          <button class="delbtn" onclick="window.location.href='/delete/{{current_user.id}}'">Delete Account</button>
+        </div>
+      </div>
+      
+      <script>
+      function openCity(evt, cityName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
+      }
+      
+      // Get the element with id="defaultOpen" and click on it
+      document.getElementById("defaultOpen").click();
+      </script>
+</div></div>         
 </body>
 </html>

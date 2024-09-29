@@ -6,7 +6,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="icon" href="https://i.ibb.co/YBxkyWP/Chrono.png">
     <style>
         body {
             font-family: "Exo 2", sans-serif;
@@ -90,39 +89,37 @@
     <div id="result-container" style="display:none;">
         <p id="result"></p>
         <a href="/profile/{{ current_user.username }}"><button>Continue</button></a>
-    </div><script>
+    </div>
+    <script>
         // Adding CSRF token to JavaScript
-        const csrfToken = '{{ csrf_token() }}'; // Ensure this is rendered correctly
+        const csrfToken = '{{ csrf_token() }}';
         let currentQuestionIndex = 0;
         let userAnswers = [];
         let timer;
         let timeLeft = 30;
         let currentQuestionId = null;
-    
+
         document.addEventListener('DOMContentLoaded', () => {
             loadNextQuestion();
-    
+
             document.getElementById('next-button').addEventListener('click', () => {
-                // Update this to check against total number of questions dynamically
                 if (currentQuestionIndex < 40) {
                     saveAnswer();
                     loadNextQuestion();
-                    currentQuestionIndex = currentQuestionIndex + 1
                 } else {
                     submitQuiz();
                 }
             });
-    
             document.addEventListener('visibilitychange', handleVisibilityChange);
         });
-    
+
         function loadNextQuestion() {
             fetch('/next_question')
                 .then(response => response.json())
                 .then(data => {
                     if (data.error) {
                         console.error(data.error);
-                        submitQuiz(); // End the quiz if there's an error
+                        submitQuiz(); // Ensure we end the quiz if there's an error
                         return;
                     }
                     displayQuestion(data);
@@ -130,17 +127,17 @@
                 })
                 .catch(error => {
                     console.error('Error loading next question:', error);
-                    submitQuiz(); // End the quiz if there's an error
+                    submitQuiz(); // Ensure we end the quiz if there's an error
                 });
         }
-    
+
         function displayQuestion(question) {
             currentQuestionId = question.id;
             document.getElementById('question-container').innerHTML = `
                 <div class="question">
                     <h1 style="padding-top:100px;">${question.question}</h1>
                     <div class="lgbtq">
-                    ${question.options.map(option => `
+                    ${question.options.map(option => `                    
                         <label>
                             <input type="radio" name="q${question.id}" value="${option}">
                             ${option}
@@ -151,26 +148,21 @@
             `;
             document.getElementById('next-button').style.display = 'block';
         }
-    
+
         function startTimer() {
             timeLeft = 30;
-            const timeElement = document.getElementById('time');
-            if (timeElement) {
-                timeElement.textContent = timeLeft;
-            }
+            document.getElementById('time').textContent = timeLeft;
             clearInterval(timer);
             timer = setInterval(() => {
                 timeLeft--;
-                if (timeElement) {
-                    timeElement.textContent = timeLeft;
-                }
+                document.getElementById('time').textContent = timeLeft;
                 if (timeLeft <= 0) {
                     clearInterval(timer);
                     document.getElementById('next-button').click();
                 }
             }, 1000);
         }
-    
+
         function saveAnswer() {
             const selectedOption = document.querySelector('input[type="radio"]:checked');
             userAnswers.push({
@@ -178,50 +170,49 @@
                 selected: selectedOption ? selectedOption.value : null
             });
         }
-    
+
         function submitQuiz(intentional = true) {
-            clearInterval(timer);
-            fetch('/submit_quiz', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken  // Use the previously defined csrfToken
-                },
-                body: JSON.stringify({ questions: userAnswers, intentional: intentional })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    console.error('HTTP error:', response.status);
-                    return response.json().then(err => {
-                        throw new Error(err.error || 'Unknown error');
-                    });
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Submit response:', data);
-                if (data.passed) {
-                    document.getElementById('result').textContent = 'Congratulations! You passed the quiz and you have earned the Viral King Badge and 100 XP';
-                } else {
-                    document.getElementById('result').textContent = 'You did not pass the quiz.';
-                }
-                document.getElementById('quiz-container').style.display = 'none';
-                document.getElementById('result-container').style.display = 'block';
-            })
-            .catch(error => {
-                console.error('Error submitting quiz:', error);
-                document.getElementById('result').textContent = 'An error occurred while submitting the quiz.';
-                document.getElementById('quiz-container').style.display = 'none';
-                document.getElementById('result-container').style.display = 'block';
+    clearInterval(timer);
+    fetch('/submit_quiz', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'  // Ensure CSRF token is included if needed
+        },
+        body: JSON.stringify({ questions: userAnswers, intentional: intentional })
+    })
+    .then(response => {
+        if (!response.ok) {
+            console.error('HTTP error:', response.status);
+            return response.json().then(err => {
+                throw new Error(err.error || 'Unknown error');
             });
         }
-    
-        function handleVisibilityChange() {
-            if (document.hidden) {
-                submitQuiz(false); // End the quiz when the user leaves the page
-            }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Submit response:', data);  // Log response data
+        if (data.passed) {
+            document.getElementById('result').textContent = 'Congratulations! You passed the quiz and you have earned the Viral King Badge and 100 XP';
+        } else {
+            document.getElementById('result').textContent = 'You did not pass the quiz.';
         }
+        document.getElementById('quiz-container').style.display = 'none';
+        document.getElementById('result-container').style.display = 'block';
+    })
+    .catch(error => {
+        console.error('Error submitting quiz:', error);
+        document.getElementById('result').textContent = 'An error occurred while submitting the quiz.';
+        document.getElementById('quiz-container').style.display = 'none';
+        document.getElementById('result-container').style.display = 'block';
+    });
+}
+function handleVisibilityChange() {
+    if (document.hidden) {
+        submitQuiz(false);
+    }
+}
+
     </script>
-    
 </body>
 </html>

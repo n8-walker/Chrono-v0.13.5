@@ -47,7 +47,7 @@
                 <a href="{{ url_for('clubs.list_clubs') }}"><i class="fas fa-users" style="color: rgba(179, 0, 0, 0.601);"></i>&nbsp; Club</a>
                 <a href="{{ url_for('league_leaderboard' , league_name=current_user.league) }}"><i class="fas fa-trophy" style="color: rgb(255, 230, 4);"></i>&nbsp; Leaderboard</a>
                 <a href="{{ url_for('resources') }}"><i class="fas fa-book" style="color: rgba(0, 0, 255, 0.607);"></i>&nbsp; Resources</a>
-                <p style="font-weight: 300; color: rgb(107, 105, 105); position: fixed; left: 2%; bottom: 2%; ">Chrono v0.14.0</p>
+                <p style="font-weight: 300; color: rgb(107, 105, 105); position: fixed; left: 2%; bottom: 2%; ">Chrono v0.15.1</p>
             </div>
         </div>  
           
@@ -108,6 +108,11 @@
     </nav>   
         <div class="left-column">
             <h2><i class="icon fas fa-tasks"></i> Tasks</h2>
+            {% if cheat == True %}
+            <p style="color: red; padding: 10px 20px; background-color: rgb(255, 194, 194); border-radius: 7px;">Don't try to add fake tasks!</p>
+            {% elif cheat == False %}
+            <p style="color: Green; padding: 10px 20px; background-color: rgb(194, 255, 194); border-radius: 7px;">Alright!</p>
+            {% endif %}
             <button class="add-task-btn" onclick="openForm()"><i class="icon fas fa-pencil-alt"></i> Add Task</button>
 
             <!-- Tasks List Table -->
@@ -187,7 +192,7 @@
                     <option value="Other">Other</option>
                 </select>
 
-                <button type="submit" class="submit-btn">Add Task</button>
+                <button type="submit" class="submit-btn" onclick="window.location.reload();">Add Task</button>
                 <button type="button" class="cancel-btn" onclick="closeForm()">Cancel</button>
             </form>
         </div>
@@ -228,7 +233,6 @@
             }
         }
     </script>
-
 <p>{{ xp_count }}</p>
 </booty>
 </body>
