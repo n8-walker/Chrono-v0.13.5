@@ -1404,6 +1404,10 @@ def get_messages(converse_id):
 def donate():
     return render_template('donation.html')
 
+@app.route('/nav')
+def nav():
+    return render_template('nav.html')
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()

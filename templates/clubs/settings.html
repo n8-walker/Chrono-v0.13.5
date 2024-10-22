@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Club</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/uni.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/csettings.css') }}">    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo+Play:wght@200..1000&display=swap" rel="stylesheet">
+    <link rel="icon" href="https://i.ibb.co/YBxkyWP/Chrono.png">
+</head>
+<body>
+    <div id="imported-content"></div>
+    <script>
+        fetch('/nav')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('imported-content').innerHTML = data;
+            eval(document.getElementById('imported-content').querySelectorAll("script").forEach(script => eval(script.innerText)));
+        })
+        .catch(error => console.error('Error loading HTML:', error));
+    </script>
+    <div class="booty">
+        <div class="container">
+            <br>
+            <form class="form-s-club" action="{{ url_for('clubs.form_customize', club_id=club.id) }}" method="POST">
+                <h2>Edit the club details</h2>
+                <input class="at" type="hidden" value="{{ csrf_token() }}" name="csrf_token">
+                <label for="name">Name</label><br>
+                <input type="text" class="at" id="name" name="name" value="{{ club.name }}"><br><br>
+                <label for="description">Description</label><br>
+                <textarea id="description" class="at" name="description">{{ club.description }}</textarea><br><br>
+                <label for="admin">Admin</label><br>
+                    <input type="text" style="flex: 1;" id="admin" name="admin" class="at" value="{{ club.admn.username or 'No Admin Yet' }}"><br><br>
+                <br>
+                <label for="mod">Moderator</label><br>
+                    <input type="text" style="flex: 1;" id="mod" name="mod" class="at" value="{{ club.mod.username or 'No Moderator Yet' }}"><br><br>
+                <input class="submit" type="submit">
+                  
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,184 @@
+
+body {
+    margin: 0;
+    font-family: "Ubuntu", sans-serif;
+  }
+
+  button, input {
+    font-family: "Ubuntu", sans-serif;
+  }
+
+  /* Top Navbar */
+  .navbar {
+    display: flex;
+    overflow: hidden;
+    background-color: white;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    align-items: center;
+  }
+
+  .navbar a {
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 5px 15px;
+    text-decoration: none;
+    font-size: 17px;
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+
+  .fa-bars {
+    font-size: 20px;
+    cursor: pointer;
+    padding: 15px 0px 15px 15px;
+    transition: 0.5s ease;
+  }
+
+  .fa-bars:hover {
+    position: relative;
+    left: 10px;
+    transition: 0.5s ease;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    margin-top: 15px;
+    padding: 0;
+    width: 200px;
+    background-color: #f1f1f1;
+    position: fixed;
+    height: calc(100% - 50px); /* Full height minus navbar height */
+    overflow: auto;
+    transition: width 0.3s ease;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+  }
+
+  .sidebar.collapsed {
+    width: 50px;
+  }
+
+  .sidebar a {
+    display: flex;
+    color: rgba(0, 0, 0, 0.726);
+    padding: 16px;
+    text-decoration: none;
+    transition: 0.3s ease;
+    opacity: 1;
+    align-items: center;
+  }
+
+  .sidebar.collapsed a span {
+    display: none;
+    opacity: 0;
+  }
+
+  .sidebar a i {
+    margin-right: 16px;
+  }
+
+  .sidebar a.active {
+    background-color: #ea00ff1a;
+  }
+
+  .sidebar a:hover:not(.active) {
+    background-color: #ea00ff1a;
+  }
+
+  /* Main content */
+  .content {
+    margin-left: 200px;
+    margin-top: 50px;
+    padding: 16px;
+    height: calc(100vh - 50px); /* Full height minus navbar height */
+    transition: margin-left 0.3s ease;
+  }
+
+  .collapsed + .content {
+    margin-left: 50px;
+  }
+
+  /* Fade-in effect for sidebar text */
+  .fade-in {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  .show-text {
+    opacity: 1;
+  }
+
+  /* Responsive layout */
+  @media screen and (max-width: 700px) {
+    .navbar a {
+      float: none;
+      display: block;
+      text-align: left;
+    }
+
+    .sidebar {
+      width: 100%;
+      height: calc(100vh - 50px); /* Full height minus navbar height */
+      position: relative;
+    }
+
+    .content {
+      margin-left: 0;
+      height: calc(100vh - 50px); /* Full height minus navbar height */
+    }
+  }
+
+  @media screen and (max-width: 400px) {
+    .navbar a, .sidebar a {
+      text-align: center;
+      float: none;
+    }
+
+    .content {
+      margin-top: 100px;
+    }
+  }
+
+.search {
+    margin-left: auto;
+    padding-right: 15px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.searchfield, .searchbutton, .search {
+    padding: 7.5px 15px;
+    border-radius: 20px;
+    border: 1px solid rgb(201, 200, 200);
+    transition: 0.1s ease;
+}
+
+.searchbutton{
+    background-color: #d571f7;
+    color: white;
+}
+
+.searchbutton:hover {
+    background-color: #9e55b6;
+    color: white;
+}
+
+.searchfield:hover, .searchbutton:hover {
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: 1px solid rgb(201, 200, 200);
+    transition: 0.1s ease;
+    font-size: 17px;
+}
+
+.bottom {
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 10px;
+    width: 100%;
+}

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>500 Internal Server Error</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #f1f8e9, #c8e6c9);
+            text-align: center;
+            overflow: hidden; /* Prevent scrolling */
+        }
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            max-width: 90%;
+            width: 100%;
+            animation: fadeIn 0.8s ease-out; /* Animation */
+        }
+        .branding img {
+            width: 100px; /* Fixed width for logo */
+            margin-bottom: 20px; /* Space between logo and content */
+        }
+        h1 { font-size: 2.2em; color: #388e3c; }
+        .error-code { font-size: 5em; color: #1b5e20; }
+        p { font-size: 1.2em; color: #333; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div id="imported-content"></div>
+    <script>
+        fetch('/nav')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('imported-content').innerHTML = data;
+            eval(document.getElementById('imported-content').querySelectorAll("script").forEach(script => eval(script.innerText)));
+        })
+        .catch(error => console.error('Error loading HTML:', error));
+    </script>
+    <div class="container">
+        <div class="branding">
+            <img src="https://i.ibb.co/YBxkyWP/Chrono.png" alt="Platform Logo">
+        </div>
+        <div class="error-code">500</div>
+        <h1>Internal Server Error</h1>
+        <p>Oops! Something went wrong on our end.</p>
+        <p>Please try again later or contact support.</p>
+    </div>
+</body>
+</html>

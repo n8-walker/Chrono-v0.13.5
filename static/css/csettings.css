@@ -1,0 +1,30 @@
+.container {
+    margin-left: 18%;
+    width: 81%;
+}
+
+.form-s-club input, .form-s-club textarea{
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, 0.144);
+}
+
+.at {
+    width: 100%;
+    border-radius: 7px;
+}
+
+.submit {
+    background-color: blueviolet;
+    width: 20%;
+    float: right;
+    border-radius: 25px;
+    color: white;
+    font-family: "Cairo Play", sans-serif;
+}
+
+.form-s-club {
+    width: 90%;
+    margin-left: 5%;
+}

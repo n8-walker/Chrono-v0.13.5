@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/stylesdashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/uni.css')}}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo+Play:wght@200..1000&display=swap" rel="stylesheet">
+    <link rel="icon" href="https://i.ibb.co/YBxkyWP/Chrono.png">
+    <title>Dashboard - Chrono</title>
+</head>
+<body>
+    <div id="imported-content"></div>
+    <script>
+        fetch('/nav')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('imported-content').innerHTML = data;
+            eval(document.getElementById('imported-content').querySelectorAll("script").forEach(script => eval(script.innerText)));
+        })
+        .catch(error => console.error('Error loading HTML:', error));
+    </script>
+    <div id="imported-content"></div>
+    <script>
+        fetch('/nav')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('imported-content').innerHTML = data;
+            eval(document.getElementById('imported-content').querySelectorAll("script").forEach(script => eval(script.innerText)));
+        })
+        .catch(error => console.error('Error loading HTML:', error));
+    </script>
